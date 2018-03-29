@@ -1,0 +1,75 @@
+﻿@model Model.ViewModel.NguoidungViewModel
+
+@{
+    ViewBag.Title = "ThongtinNguoidung";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    var session = (Doandinhduong.Areas.Admin.Common.UserLoginSS)Session[Doandinhduong.Common.CommonConstants.USER_SESSION];
+
+}
+<div class="fresh-vegetables">
+    <div class="container">        
+        <div class="w3l_fresh_vegetables_grids">
+          
+            <div class="col-md-9 w3l_fresh_vegetables_grid_right">
+                <div class="col-md-4 w3l_fresh_vegetables_grid">
+                    <div class="w3l_fresh_vegetables_grid1">
+                        <table>
+                            <tr>
+                                <td>@Html.DisplayNameFor(model => model.Taikhoan)</td>
+                                <td>@Html.DisplayFor(model => model.Taikhoan)</td>
+                            </tr>
+                            <tr>
+                                <td>@Html.DisplayNameFor(model => model.Ten_ND)</td>
+                                <td>@Html.DisplayFor(model => model.Ten_ND)</td>
+                            </tr>
+                            <tr>
+                                <td>@Html.DisplayNameFor(model => model.Tuoi)</td>
+                                <td>@Html.DisplayFor(model => model.Tuoi)</td>
+                            </tr>
+                            <tr>
+                                <td>@Html.DisplayNameFor(model => model.Gioitinh)</td>
+                                <td>@Html.DisplayFor(model => model.Gioitinh)</td>
+                            </tr>
+                            <tr>
+                                <td>@Html.DisplayNameFor(model => model.Chieucao)</td>
+                                <td>@Html.DisplayFor(model => model.Chieucao)</td>
+                            </tr>
+                            <tr>
+                                <td>@Html.DisplayNameFor(model => model.Cannang)</td>
+                                <td>@Html.DisplayFor(model => model.Cannang)</td>
+                            </tr>
+                            <tr>
+                                <td>@Html.DisplayNameFor(model => model.Email)</td>
+                                <td>@Html.DisplayFor(model => model.Email)</td>
+                            </tr>
+                            <tr>
+                                <td>@Html.DisplayNameFor(model => model.CaloriesTrongngay)</td>
+                                <td>@Html.DisplayFor(model => model.CaloriesTrongngay)</td>
+                            </tr>
+                            <tr>
+                                <td>@Html.DisplayNameFor(model => model.TenMuctieu)</td>
+                                <td>@Html.DisplayFor(model => model.TenMuctieu)</td>
+                            </tr>
+                            <tr>
+                                <td>@Html.DisplayNameFor(model => model.Loai)</td>
+                                <td>@Html.DisplayFor(model => model.Loai)</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a href="/cap-nhap-thong-tin/@session.UserName">Sửa</a></td>
+                            </tr>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+</div>
+<link href="~/Asset/client/cssfix/fixForUsers.css" rel="stylesheet" />
+<link href="~/Asset/client/cssfix/fixstyle.css" rel="stylesheet" />
+    
+

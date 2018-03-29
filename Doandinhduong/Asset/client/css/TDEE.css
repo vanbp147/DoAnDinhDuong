@@ -1,0 +1,20 @@
+﻿body {
+    
+}
+
+#BRM_tab tr{
+
+    border-bottom: 1px solid;
+    border-top: 1px solid;
+
+}
+
+#BRM_tab td{
+    padding: 5px;
+}
+
+#calorie_panel{
+
+    border-radius: 25px;
+    border: 2px solid #34F458;
+}

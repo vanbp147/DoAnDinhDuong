@@ -1,0 +1,1506 @@
+﻿@model Doandinhduong.Models.PersonStat
+
+@{
+    ViewBag.Title = "TDEE";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.2.1.js"></script>
+<script src="~/Scripts/jquery-3.2.1.min.js"></script>
+<div class="fresh-vegetables">
+    <div class="container">
+        <div class="w3l_fresh_vegetables_grids">
+            <div class="col-md-12">
+                <form role="form" id="Calculator">
+                    <div class="col-md-6">
+                        <table>
+                            <tr>
+                                <td colspan="2">
+                                    <h3>Thông số của bạn</h3>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Tuổi</td>
+                                <td>
+                                    <input type="text" name="age" id="txtAge" min="1" max="999" class="form-control" placeholder="Tuổi">
+                                    <span class="error-form btn-sm text-danger" id="age_error_message"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Giới tính</td>
+                                <td>
+                                    <select id="txtGender" class="form-control">
+                                        <option>Nam</option>
+                                        <option>Nữ</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Cân nặng</td>
+                                <td>
+                                    <input name="weight" id="txtWeight" type="text" min="1" max="999" class="form-control" placeholder="Cân nặng (Kg)" />
+                                    <span class="error-form btn-sm text-danger" id="weight_error_message"></span>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>Chiều cao</td>
+                                <td>
+                                    <input name="height" id="txtHeight" type="text" min="1" max="999" class="form-control" placeholder="Chiều cao (Cm)" />
+                                    <span class="error-form btn-sm text-danger" id="height_error_message"></span>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>Hoạt động</td>
+                                <td>
+
+                                    <select id="txtActivity" class="form-control">
+                                        <option>Hoạt động nhẹ</option>
+                                        <option>Hoạt động vừa ( 1 đến 3 lần/tuần )</option>
+                                        <option>Hoạt động trung bình ( 3 đến 5 lần/tuần )</option>
+                                        <option>Hoạt động nặng ( 6 đến 7 lần/tuần )</option>
+                                        <option>Vận động viên</option>
+                                    </select>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="col-md-2 text-center">
+                                    <input id="re_calculate" type="button" class="btn-lg" value="Re-calculate" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="col-md-6">
+                        <table>
+                            <tr>
+                                <td rowspan="5" class="col-md-4 text-center">
+                                    <div class="panel panel-collapse" id="calorie_panel">
+                                        <h3> Lượng calorie cần duy trì của bạn </h3>
+                                        <div class="panel-heading">
+
+                                            <h3 id="txtCalorieDay"></h3>
+                                            <p>calories mỗi ngày </p>
+                                        </div>
+                                        <div class="panel-body">
+                                            <h3 id="txtCalorieWeek"></h3>
+                                            <p>calories hằng tuần</p>
+                                        </div>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="clearfix"></div><!-- phần 1------------------------------>
+                    <div class="col-md-6">
+                        <table>
+                            <tr>
+                                <td>
+                                    <span>+++ Dựa vào chỉ số mà bạn cung cấp, lượng calorie bạn cần duy trì là <b id="BRM_result"></b> mỗi ngày dựa trên công thức Mifflin-St Jeor, được xem là chính xác nhất. +++<br /> Bảng bên cạnh cho biết lượng calorie bạn cần nếu chọn các mức độ hoạt dộng khác.</span>
+                                </td>
+                            </tr>
+
+                        </table>
+                    </div>
+
+                    <div class="col-md-6">
+                        <table class="table table-hover" id="tabBRM">
+                            <tr id="BRM_col_0">
+                                <td class="col-md-1">Chỉ số Basal Metabolic Rate (BMR)</td>
+                                <td id="row0" class="text-center col-md-1"></td>
+                            </tr>
+                            <tr id="BRM_col_1">
+                                <td class="col-md-1">Hoạt động nhẹ</td>
+                                <td id="row1" class="text-center col-md-1"></td>
+                            </tr>
+                            <tr id="BRM_col_2">
+                                <td class="col-md-1">Hoạt động vừa </td>
+                                <td id="row2" class="text-center col-md-1"></td>
+                            </tr>
+                            <tr id="BRM_col_3">
+                                <td class="col-md-1">Hoạt động trung bình </td>
+                                <td id="row3" class="text-center col-md-1"></td>
+                            </tr>
+                            <tr id="BRM_col_4">
+                                <td class="col-md-1">Hoạt động nặng </td>
+                                <td id="row4" class="text-center col-md-1"></td>
+                            </tr>
+                            <tr id="BRM_col_5">
+                                <td class="col-md-1">Vận động viên</td>
+                                <td id="row5" class="text-center col-md-1"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="clearfix"></div><!-- Phần 2--------------->
+                    <div class="col-md-6">
+                        <table class=" table table-hover" id="tab_weight">
+                            <tr>
+                                <td colspan="2">
+                                    <h3>Cân nặng lý tưởng:<b id="Hamwi_weight_result"></b> - <b id="Miller_weight_result"></b> kg</h3>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    Cân nặng lý tưởng của bạn nằm trong khoảng <b id="Hamwi_weight"></b> - <b id="Miller_weight"></b> kg dựa vào các công thức bên dưới <br />
+                                    Những công thức này dựa vào chiều cao của bạn và chỉ thể hiện số đo trung bình, cho nên dừng xem trọng quá những số đo này đặc biệt khi bạn tập thể hình
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>G.J. Hamwi Formula (1964)</td>
+                                <td id="Weight_col_1"></td>
+                            </tr>
+                            <tr>
+                                <td>B.J. Devine Formula (1974)</td>
+                                <td id="Weight_col_2"></td>
+                            </tr>
+                            <tr>
+                                <td>J.D. Robinson Formula (1983)	</td>
+                                <td id="Weight_col_3"></td>
+                            </tr>
+                            <tr>
+                                <td>D.R. Miller Formula (1983)</td>
+                                <td id="Weight_col_4"></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="col-md-6">
+                        <!--BMI Score-->
+                        <table class=" table table-hover" id="tab_BMI">
+                            <tr>
+                                <td colspan="2">
+                                    <h3>Chỉ số BMI: <b id="BMI"></b></h3>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    Chỉ số <strong> BMI </strong> của bạn là <b id="BMI_result"></b>, có nghĩa là bạn thuộc nhóm <b id="BMI_commend"></b> ....<br />
+                                    <span class="label label-primary text-center"> Chú ý! </span>Những người sử dụng những<a rel="nofollow" target="_blank" href="https://www.amazon.co.uk/s/ref=as_li_ss_tl?url=search-alias=aps&field-keywords=food+scale&rh=i:aps,k:food+scale&linkCode=ll2&tag=tdeecalc-vn-21&linkId=f802f7e857a45e5f092b536cf5037f5b"> công cụ đơn giản tuyệt vời </a>
+                                    này thường giảm cân nhanh hơn những người không sử dụng.
+                                </td>
+
+                            </tr>
+                            <tr id="BMI_row_1">
+                                <td>18.5 or less</td>
+                                <td>Suy dinh dưỡng</td>
+                            </tr>
+                            <tr id="BMI_row_2">
+                                <td>18.5 – 24.99</td>
+                                <td>Cân nặng bình thường</td>
+                            </tr>
+                            <tr id="BMI_row_3">
+                                <td>25 – 29.99	</td>
+                                <td>Thừa cân</td>
+                            </tr>
+                            <tr id="BMI_row_4">
+                                <td>30+</td>
+                                <td>Béo phì</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="clearfix"></div><!----Phần 3-->
+
+                    <div class="col-md-12">
+                        <!--BMI Score-->
+                        <table class="table">
+                            <tr>
+                                <td colspan="2">
+                                    <h3>Các chất dinh dưỡng đa lượng</h3>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <ul class="nav nav-tabs" role="tablist">
+                                        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Giữ cân</a></li>
+                                        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Giảm cân</a></li>
+                                        <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Tăng cân</a></li>
+                                        <li role="presentation" class="disabled pull-right hidden-xs"><a class="disabled"><small>30/35/35 có nghĩa là 30% protein, 35% fat, 35% carb</small></a></li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div role="tabpanel" class="tab-pane active" id="home">
+                                            <div class="row">
+                                                <p class="text-center">Giá trị những chất dinh dưỡng đa lượng phản ánh lượng calorie cần duy trì của bạn là <strong id="nutrient_calorie_1"></strong> calorie mỗi ngày </p>
+                                                <br />
+                                                <div class="col-sm-4" style="padding-left:20px; padding-right:20px">
+                                                    <span style="display:inline-block" class="label label-primary text-center ">Lượng tinh bột vừa phải (30/35/35)</span>
+                                                    <div class="well">
+                                                        <div class="text-center" style="height:75px">
+                                                            <span class="h2" id="maintenance_protein_1" title="Lượng đạm cần thiết" style="cursor:help">
+
+                                                            </span>
+                                                            <br />
+                                                            <span>protein</span>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="text-center" style="height:75px">
+                                                            <span class="h2" id="maintenance_fats_1" title="Lượng chất béo cần thiết" style="cursor:help">
+
+                                                            </span>
+                                                            <br />
+                                                            <span>fats</span>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="text-center" style="height:75px">
+                                                            <span class="h2" id="maintenance_carb_1" title="Lương tinh bột cần thiết" style="cursor:help">
+
+                                                            </span>
+                                                            <br />
+                                                            <span>carb</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4" style="padding-left:0; padding-right:20px">
+                                                    <span style="display:inline-block" class="label label-primary text-center ">Lượng tinh ít (40/40/20)</span>
+                                                    <div class="well">
+                                                        <div class="text-center" style="height:75px">
+                                                            <span class="h2" id="maintenance_protein_2" title="Lượng đạm cần thiết" style="cursor:help">
+
+                                                            </span>
+                                                            <br />
+                                                            <span>protein</span>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="text-center" style="height:75px">
+                                                            <span class="h2" id="maintenance_fats_2" title="Lượng chất béo cần thiết" style="cursor:help">
+
+                                                            </span>
+                                                            <br />
+                                                            <span>fats</span>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="text-center" style="height:75px">
+                                                            <span class="h2" id="maintenance_carb_2" title="Lương tinh bột cần thiết" style="cursor:help">
+
+                                                            </span>
+                                                            <br />
+                                                            <span>carb</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4" style="padding-left:0; padding-right:20px">
+                                                    <span style="display:inline-block" class="label label-primary text-center ">Lượng tinh bột nhiều (30/20/50)</span>
+                                                    <div class="well">
+                                                        <div class="text-center" style="height:75px">
+                                                            <span class="h2" id="maintenance_protein_3" title="Lượng đạm cần thiết" style="cursor:help">
+
+                                                            </span>
+                                                            <br />
+                                                            <span>protein</span>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="text-center" style="height:75px">
+                                                            <span class="h2" id="maintenance_fats_3" title="Lượng chất béo cần thiết" style="cursor:help">
+
+                                                            </span>
+                                                            <br />
+                                                            <span>fats</span>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="text-center" style="height:75px">
+                                                            <span class="h2" id="maintenance_carb_3" title="Lương tinh bột cần thiết" style="cursor:help">
+
+                                                            </span>
+                                                            <br />
+                                                            <span>carb</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane" id="profile">
+                                            <div class="row">
+                                                <p class="text-center">Giá trị những chất dinh dưỡng đa lượng phản ánh lượng calorie cần để bạn giảm cân là <strong id="nutrient_calorie_2"></strong> calorie mỗi ngày , có nghĩa là đã giảm 500 calorie so với lượng calorie cần duy trì của bạn mỗi ngày</p>
+                                                <br />
+                                                <div class="col-sm-4" style="padding-left:20px; padding-right:20px">
+                                                    <span style="display:inline-block" class="label label-primary text-center ">Lượng tinh bột vừa phải (30/35/35)</span>
+                                                    <div class="well">
+                                                        <div class="text-center" style="height:75px">
+                                                            <span class="h2" id="cut_protein_1" title="Lượng đạm cần thiết" style="cursor:help">
+
+                                                            </span>
+                                                            <br />
+                                                            <span>protein</span>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="text-center" style="height:75px">
+                                                            <span class="h2" id="cut_fats_1" title="Lượng chất béo cần thiết" style="cursor:help">
+
+                                                            </span>
+                                                            <br />
+                                                            <span>fats</span>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="text-center" style="height:75px">
+                                                            <span class="h2" id="cut_carb_1" title="Lương tinh bột cần thiết" style="cursor:help">
+
+                                                            </span>
+                                                            <br />
+                                                            <span>carb</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4" style="padding-left:0; padding-right:20px">
+                                                    <span style="display:inline-block" class="label label-primary text-center ">Lượng tinh ít (40/40/20)</span>
+                                                    <div class="well">
+                                                        <div class="text-center" style="height:75px">
+                                                            <span class="h2" id="cut_protein_2" title="Lượng đạm cần thiết" style="cursor:help">
+
+                                                            </span>
+                                                            <br />
+                                                            <span>protein</span>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="text-center" style="height:75px">
+                                                            <span class="h2" id="cut_fats_2" title="Lượng chất béo cần thiết" style="cursor:help">
+
+                                                            </span>
+                                                            <br />
+                                                            <span>fats</span>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="text-center" style="height:75px">
+                                                            <span class="h2" id="cut_carb_2" title="Lương tinh bột cần thiết" style="cursor:help">
+
+                                                            </span>
+                                                            <br />
+                                                            <span>carb</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4" style="padding-left:0; padding-right:20px">
+                                                    <span style="display:inline-block" class="label label-primary text-center ">Lượng tinh bột nhiều (30/20/50)</span>
+                                                    <div class="well">
+                                                        <div class="text-center" style="height:75px">
+                                                            <span class="h2" id="cut_protein_3" title="Lượng đạm cần thiết" style="cursor:help">
+
+                                                            </span>
+                                                            <br />
+                                                            <span>protein</span>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="text-center" style="height:75px">
+                                                            <span class="h2" id="cut_fats_3" title="Lượng chất béo cần thiết" style="cursor:help">
+
+                                                            </span>
+                                                            <br />
+                                                            <span>fats</span>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="text-center" style="height:75px">
+                                                            <span class="h2" id="cut_carb_3" title="Lương tinh bột cần thiết" style="cursor:help">
+
+                                                            </span>
+                                                            <br />
+                                                            <span>carb</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane" id="messages">
+                                            <div class="row">
+                                                <p class="text-center">Giá trị những chất dinh dưỡng đa lượng phản ánh lượng calorie dùng để tăng cân là <strong id="nutrient_calorie_3"></strong> calorie mỗi ngày, có nghĩa là đã tăng 500 calorie so với lượng calorie cần duy trì của bạn mỗi ngày </p>
+                                                <br />
+                                                <div class="col-sm-4" style="padding-left:20px; padding-right:20px">
+                                                    <span style="display:inline-block" class="label label-primary text-center ">Lượng tinh bột vừa phải (30/35/35)</span>
+                                                    <div class="well">
+                                                        <div class="text-center" style="height:75px">
+                                                            <span class="h2" id="bulk_protein_1" title="Lượng đạm cần thiết" style="cursor:help">
+
+                                                            </span>
+                                                            <br />
+                                                            <span>protein</span>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="text-center" style="height:75px">
+                                                            <span class="h2" id="bulk_fats_1" title="Lượng chất béo cần thiết" style="cursor:help">
+
+                                                            </span>
+                                                            <br />
+                                                            <span>fats</span>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="text-center" style="height:75px">
+                                                            <span class="h2" id="bulk_carb_1" title="Lương tinh bột cần thiết" style="cursor:help">
+
+                                                            </span>
+                                                            <br />
+                                                            <span>carb</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4" style="padding-left:0; padding-right:20px">
+                                                    <span style="display:inline-block" class="label label-primary text-center ">Lượng tinh ít (40/40/20)</span>
+                                                    <div class="well">
+                                                        <div class="text-center" style="height:75px">
+                                                            <span class="h2" id="bulk_protein_2" title="Lượng đạm cần thiết" style="cursor:help">
+
+                                                            </span>
+                                                            <br />
+                                                            <span>protein</span>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="text-center" style="height:75px">
+                                                            <span class="h2" id="bulk_fats_2" title="Lượng chất béo cần thiết" style="cursor:help">
+
+                                                            </span>
+                                                            <br />
+                                                            <span>fats</span>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="text-center" style="height:75px">
+                                                            <span class="h2" id="bulk_carb_2" title="Lương tinh bột cần thiết" style="cursor:help">
+
+                                                            </span>
+                                                            <br />
+                                                            <span>carb</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4" style="padding-left:0; padding-right:20px">
+                                                    <span style="display:inline-block" class="label label-primary text-center ">Lượng tinh bột nhiều (30/20/50)</span>
+                                                    <div class="well">
+                                                        <div class="text-center" style="height:75px">
+                                                            <span class="h2" id="bulk_protein_3" title="Lượng đạm cần thiết" style="cursor:help">
+
+                                                            </span>
+                                                            <br />
+                                                            <span>protein</span>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="text-center" style="height:75px">
+                                                            <span class="h2" id="bulk_fats_3" title="Lượng chất béo cần thiết" style="cursor:help">
+
+                                                            </span>
+                                                            <br />
+                                                            <span>fats</span>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="text-center" style="height:75px">
+                                                            <span class="h2" id="bulk_carb_3" title="Lương tinh bột cần thiết" style="cursor:help">
+
+                                                            </span>
+                                                            <br />
+                                                            <span>carb</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="mt-10 text-center">
+                                        <small>
+                                            Mỗi gram chất đạm và tinh bột có giá trị bằng 4 calorie, trong khi chất béo có giá trị là 9 calorie
+                                        </small>
+                                    </p>
+                                    
+                                </td>
+                                <td style="text-align:center;">
+                                    <input type="button" onclick="myFunction()" class="glyphicon glyphicon-print" value="Print" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+
+                </form>
+
+            </div>
+
+
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+</div>
+
+
+
+<link href="/Asset/client/cssfix/fixstyle.css" rel="stylesheet" />
+<link href="/Asset/client/cssfix/fixcssTDEE.css" rel="stylesheet" />
+
+<script>
+
+    $('#re_calculate').click(function () {
+
+
+        var gender_val = $('#txtGender').val();
+        var age_val = $('#txtAge').val();
+        var weight_val = $('#txtWeight').val();
+        var height_val = $('#txtHeight').val();
+        var activity_val = $('#txtActivity').val();
+
+        $.ajax({
+            url: "http://localhost:2346/Service1.svc/BRM_calculate",
+            data: JSON.stringify({ gender: gender_val, age: age_val, weight: weight_val, height: height_val }),
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                var BMI_score = data.BMI;
+                $('#row0').text(data.BRM_0);
+                $('#row1').text(data.BRM_1);
+                $('#row2').text(data.BRM_2);
+                $('#row3').text(data.BRM_3);
+                $('#row4').text(data.BRM_4);
+                $('#row5').text(data.BRM_5);
+                $('#Hamwi_weight_result').text(data.Hamwi_weight);
+                $('#Miller_weight_result').text(data.Miller_weight);
+                $('#BMI_result').text(BMI_score);
+                $('#BMI').text(BMI_score);
+                $('#Weight_col_1').text(data.Hamwi_weight);
+                $('#Weight_col_2').text(data.Devine_weight);
+                $('#Weight_col_3').text(data.Robinson_weight);
+                $('#Weight_col_4').text(data.Miller_weight);
+                $('#Hamwi_weight').text(data.Hamwi_weight);
+                $('#Miller_weight').text(data.Miller_weight);
+                switch(activity_val)
+                {
+                    case "Hoạt động nhẹ":
+                        $('#txtCalorieDay').text(data.BRM_1)
+                        $('#txtCalorieWeek').text(data.BRM_1 * 7)
+                        $('#BRM_result').text(data.BRM_1)
+                        var calorie_val = data.BRM_1
+                        var calorie_val_cut = data.BRM_1-500
+                        var calorie_val_bulk = data.BRM_1+500
+                        $('#nutrient_calorie_1').text(calorie_val)
+                        $('#nutrient_calorie_2').text(calorie_val_cut)
+                        $('#nutrient_calorie_3').text(calorie_val_bulk)
+
+
+                        $('#maintenance_protein_1').text(Math.round( parseFloat(((calorie_val*30)/100)/4)))
+                        $('#cut_protein_1').text(Math.round( parseFloat(((calorie_val_cut*30)/100)/4)))
+                        $('#bulk_protein_1').text(Math.round( parseFloat(((calorie_val_bulk*30)/100)/4)))
+                        $('#maintenance_protein_2').text(Math.round( parseFloat(((calorie_val*40)/100)/4)))
+                        $('#cut_protein_2').text(Math.round( parseFloat(((calorie_val_cut*40)/100)/4)))
+                        $('#bulk_protein_2').text(Math.round( parseFloat(((calorie_val_bulk*40)/100)/4)))
+                        $('#maintenance_protein_3').text(Math.round( parseFloat(((calorie_val*30)/100)/4)))
+                        $('#cut_protein_3').text(Math.round( parseFloat(((calorie_val_cut*30)/100)/4)))
+                        $('#bulk_protein_3').text(Math.round( parseFloat(((calorie_val_bulk*30)/100)/4)))
+
+                        $('#maintenance_fats_1').text(Math.round( parseFloat(((calorie_val*35)/100)/9)))
+                        $('#cut_fats_1').text(Math.round( parseFloat(((calorie_val_cut*35)/100)/9)))
+                        $('#bulk_fats_1').text(Math.round( parseFloat(((calorie_val_bulk*35)/100)/9)))
+                        $('#maintenance_fats_2').text(Math.round( parseFloat(((calorie_val*40)/100)/9)))
+                        $('#cut_fats_2').text(Math.round( parseFloat(((calorie_val_cut*40)/100)/9)))
+                        $('#bulk_fats_2').text(Math.round( parseFloat(((calorie_val_bulk*40)/100)/9)))
+                        $('#maintenance_fats_3').text(Math.round( parseFloat(((calorie_val*20)/100)/9)))
+                        $('#cut_fats_3').text(Math.round( parseFloat(((calorie_val_cut*20)/100)/9)))
+                        $('#bulk_fats_3').text(Math.round( parseFloat(((calorie_val_bulk*20)/100)/9)))
+
+                        $('#maintenance_carb_1').text(Math.round( parseFloat(((calorie_val*35)/100)/4)))
+                        $('#cut_carb_1').text(Math.round( parseFloat(((calorie_val_cut*35)/100)/4)))
+                        $('#bulk_carb_1').text(Math.round( parseFloat(((calorie_val_bulk*35)/100)/4)))
+                        $('#maintenance_carb_2').text(Math.round( parseFloat(((calorie_val*20)/100)/4)))
+                        $('#cut_carb_2').text(Math.round( parseFloat(((calorie_val_cut*20)/100)/4)))
+                        $('#bulk_carb_2').text(Math.round( parseFloat(((calorie_val_bulk*20)/100)/4)))
+                        $('#maintenance_carb_3').text(Math.round( parseFloat(((calorie_val*50)/100)/4)))
+                        $('#cut_carb_3').text(Math.round( parseFloat(((calorie_val_cut*50)/100)/4)))
+                        $('#bulk_carb_3').text(Math.round( parseFloat(((calorie_val_bulk*50)/100)/4)))
+
+
+                        break
+
+                    case "Hoạt động vừa ( 1 đến 3 lần/tuần )":
+                        $('#txtCalorieDay').text(data.BRM_2)
+                        $('#txtCalorieWeek').text(data.BRM_2 * 7)
+                        $('#BRM_result').text(data.BRM_2)
+                        var calorie_val = data.BRM_2
+                        var calorie_val_cut = data.BRM_2-500
+                        var calorie_val_bulk = data.BRM_2+500
+                        $('#nutrient_calorie_1').text(calorie_val)
+                        $('#nutrient_calorie_2').text(calorie_val_cut)
+                        $('#nutrient_calorie_3').text(calorie_val_bulk)
+
+
+                        $('#maintenance_protein_1').text(Math.round( parseFloat(((calorie_val*30)/100)/4)))
+                        $('#cut_protein_1').text(Math.round( parseFloat(((calorie_val_cut*30)/100)/4)))
+                        $('#bulk_protein_1').text(Math.round( parseFloat(((calorie_val_bulk*30)/100)/4)))
+                        $('#maintenance_protein_2').text(Math.round( parseFloat(((calorie_val*40)/100)/4)))
+                        $('#cut_protein_2').text(Math.round( parseFloat(((calorie_val_cut*40)/100)/4)))
+                        $('#bulk_protein_2').text(Math.round( parseFloat(((calorie_val_bulk*40)/100)/4)))
+                        $('#maintenance_protein_3').text(Math.round( parseFloat(((calorie_val*30)/100)/4)))
+                        $('#cut_protein_3').text(Math.round( parseFloat(((calorie_val_cut*30)/100)/4)))
+                        $('#bulk_protein_3').text(Math.round( parseFloat(((calorie_val_bulk*30)/100)/4)))
+
+                        $('#maintenance_fats_1').text(Math.round( parseFloat(((calorie_val*35)/100)/9)))
+                        $('#cut_fats_1').text(Math.round( parseFloat(((calorie_val_cut*35)/100)/9)))
+                        $('#bulk_fats_1').text(Math.round( parseFloat(((calorie_val_bulk*35)/100)/9)))
+                        $('#maintenance_fats_2').text(Math.round( parseFloat(((calorie_val*40)/100)/9)))
+                        $('#cut_fats_2').text(Math.round( parseFloat(((calorie_val_cut*40)/100)/9)))
+                        $('#bulk_fats_2').text(Math.round( parseFloat(((calorie_val_bulk*40)/100)/9)))
+                        $('#maintenance_fats_3').text(Math.round( parseFloat(((calorie_val*20)/100)/9)))
+                        $('#cut_fats_3').text(Math.round( parseFloat(((calorie_val_cut*20)/100)/9)))
+                        $('#bulk_fats_3').text(Math.round( parseFloat(((calorie_val_bulk*20)/100)/9)))
+
+                        $('#maintenance_carb_1').text(Math.round( parseFloat(((calorie_val*35)/100)/4)))
+                        $('#cut_carb_1').text(Math.round( parseFloat(((calorie_val_cut*35)/100)/4)))
+                        $('#bulk_carb_1').text(Math.round( parseFloat(((calorie_val_bulk*35)/100)/4)))
+                        $('#maintenance_carb_2').text(Math.round( parseFloat(((calorie_val*20)/100)/4)))
+                        $('#cut_carb_2').text(Math.round( parseFloat(((calorie_val_cut*20)/100)/4)))
+                        $('#bulk_carb_2').text(Math.round( parseFloat(((calorie_val_bulk*20)/100)/4)))
+                        $('#maintenance_carb_3').text(Math.round( parseFloat(((calorie_val*50)/100)/4)))
+                        $('#cut_carb_3').text(Math.round( parseFloat(((calorie_val_cut*50)/100)/4)))
+                        $('#bulk_carb_3').text(Math.round( parseFloat(((calorie_val_bulk*50)/100)/4)))
+                        break
+
+                    case "Hoạt động trung bình ( 3 đến 5 lần/tuần )":
+                        $('#txtCalorieDay').text(data.BRM_3)
+                        $('#txtCalorieWeek').text(data.BRM_3 * 7)
+                        $('#BRM_result').text(data.BRM_3)
+                        var calorie_val = data.BRM_3
+                        var calorie_val_cut = data.BRM_3-500
+                        var calorie_val_bulk = data.BRM_3+500
+                        $('#nutrient_calorie_1').text(calorie_val)
+                        $('#nutrient_calorie_2').text(calorie_val_cut)
+                        $('#nutrient_calorie_3').text(calorie_val_bulk)
+
+
+                        $('#maintenance_protein_1').text(Math.round( parseFloat(((calorie_val*30)/100)/4)))
+                        $('#cut_protein_1').text(Math.round( parseFloat(((calorie_val_cut*30)/100)/4)))
+                        $('#bulk_protein_1').text(Math.round( parseFloat(((calorie_val_bulk*30)/100)/4)))
+                        $('#maintenance_protein_2').text(Math.round( parseFloat(((calorie_val*40)/100)/4)))
+                        $('#cut_protein_2').text(Math.round( parseFloat(((calorie_val_cut*40)/100)/4)))
+                        $('#bulk_protein_2').text(Math.round( parseFloat(((calorie_val_bulk*40)/100)/4)))
+                        $('#maintenance_protein_3').text(Math.round( parseFloat(((calorie_val*30)/100)/4)))
+                        $('#cut_protein_3').text(Math.round( parseFloat(((calorie_val_cut*30)/100)/4)))
+                        $('#bulk_protein_3').text(Math.round( parseFloat(((calorie_val_bulk*30)/100)/4)))
+
+                        $('#maintenance_fats_1').text(Math.round( parseFloat(((calorie_val*35)/100)/9)))
+                        $('#cut_fats_1').text(Math.round( parseFloat(((calorie_val_cut*35)/100)/9)))
+                        $('#bulk_fats_1').text(Math.round( parseFloat(((calorie_val_bulk*35)/100)/9)))
+                        $('#maintenance_fats_2').text(Math.round( parseFloat(((calorie_val*40)/100)/9)))
+                        $('#cut_fats_2').text(Math.round( parseFloat(((calorie_val_cut*40)/100)/9)))
+                        $('#bulk_fats_2').text(Math.round( parseFloat(((calorie_val_bulk*40)/100)/9)))
+                        $('#maintenance_fats_3').text(Math.round( parseFloat(((calorie_val*20)/100)/9)))
+                        $('#cut_fats_3').text(Math.round( parseFloat(((calorie_val_cut*20)/100)/9)))
+                        $('#bulk_fats_3').text(Math.round( parseFloat(((calorie_val_bulk*20)/100)/9)))
+
+                        $('#maintenance_carb_1').text(Math.round( parseFloat(((calorie_val*35)/100)/4)))
+                        $('#cut_carb_1').text(Math.round( parseFloat(((calorie_val_cut*35)/100)/4)))
+                        $('#bulk_carb_1').text(Math.round( parseFloat(((calorie_val_bulk*35)/100)/4)))
+                        $('#maintenance_carb_2').text(Math.round( parseFloat(((calorie_val*20)/100)/4)))
+                        $('#cut_carb_2').text(Math.round( parseFloat(((calorie_val_cut*20)/100)/4)))
+                        $('#bulk_carb_2').text(Math.round( parseFloat(((calorie_val_bulk*20)/100)/4)))
+                        $('#maintenance_carb_3').text(Math.round( parseFloat(((calorie_val*50)/100)/4)))
+                        $('#cut_carb_3').text(Math.round( parseFloat(((calorie_val_cut*50)/100)/4)))
+                        $('#bulk_carb_3').text(Math.round( parseFloat(((calorie_val_bulk*50)/100)/4)))
+                        break
+
+                    case "Hoạt động nặng ( 6 đến 7 lần/tuần )":
+                        $('#txtCalorieDay').text(data.BRM_4)
+                        $('#txtCalorieWeek').text(data.BRM_4 * 7)
+                        $('#BRM_result').text(data.BRM_4)
+                        var calorie_val = data.BRM_4
+                        var calorie_val_cut = data.BRM_4-500
+                        var calorie_val_bulk = data.BRM_4+500
+                        $('#nutrient_calorie_1').text(calorie_val)
+                        $('#nutrient_calorie_2').text(calorie_val_cut)
+                        $('#nutrient_calorie_3').text(calorie_val_bulk)
+
+
+                        $('#maintenance_protein_1').text(Math.round( parseFloat(((calorie_val*30)/100)/4)))
+                        $('#cut_protein_1').text(Math.round( parseFloat(((calorie_val_cut*30)/100)/4)))
+                        $('#bulk_protein_1').text(Math.round( parseFloat(((calorie_val_bulk*30)/100)/4)))
+                        $('#maintenance_protein_2').text(Math.round( parseFloat(((calorie_val*40)/100)/4)))
+                        $('#cut_protein_2').text(Math.round( parseFloat(((calorie_val_cut*40)/100)/4)))
+                        $('#bulk_protein_2').text(Math.round( parseFloat(((calorie_val_bulk*40)/100)/4)))
+                        $('#maintenance_protein_3').text(Math.round( parseFloat(((calorie_val*30)/100)/4)))
+                        $('#cut_protein_3').text(Math.round( parseFloat(((calorie_val_cut*30)/100)/4)))
+                        $('#bulk_protein_3').text(Math.round( parseFloat(((calorie_val_bulk*30)/100)/4)))
+
+                        $('#maintenance_fats_1').text(Math.round( parseFloat(((calorie_val*35)/100)/9)))
+                        $('#cut_fats_1').text(Math.round( parseFloat(((calorie_val_cut*35)/100)/9)))
+                        $('#bulk_fats_1').text(Math.round( parseFloat(((calorie_val_bulk*35)/100)/9)))
+                        $('#maintenance_fats_2').text(Math.round( parseFloat(((calorie_val*40)/100)/9)))
+                        $('#cut_fats_2').text(Math.round( parseFloat(((calorie_val_cut*40)/100)/9)))
+                        $('#bulk_fats_2').text(Math.round( parseFloat(((calorie_val_bulk*40)/100)/9)))
+                        $('#maintenance_fats_3').text(Math.round( parseFloat(((calorie_val*20)/100)/9)))
+                        $('#cut_fats_3').text(Math.round( parseFloat(((calorie_val_cut*20)/100)/9)))
+                        $('#bulk_fats_3').text(Math.round( parseFloat(((calorie_val_bulk*20)/100)/9)))
+
+                        $('#maintenance_carb_1').text(Math.round( parseFloat(((calorie_val*35)/100)/4)))
+                        $('#cut_carb_1').text(Math.round( parseFloat(((calorie_val_cut*35)/100)/4)))
+                        $('#bulk_carb_1').text(Math.round( parseFloat(((calorie_val_bulk*35)/100)/4)))
+                        $('#maintenance_carb_2').text(Math.round( parseFloat(((calorie_val*20)/100)/4)))
+                        $('#cut_carb_2').text(Math.round( parseFloat(((calorie_val_cut*20)/100)/4)))
+                        $('#bulk_carb_2').text(Math.round( parseFloat(((calorie_val_bulk*20)/100)/4)))
+                        $('#maintenance_carb_3').text(Math.round( parseFloat(((calorie_val*50)/100)/4)))
+                        $('#cut_carb_3').text(Math.round( parseFloat(((calorie_val_cut*50)/100)/4)))
+                        $('#bulk_carb_3').text(Math.round( parseFloat(((calorie_val_bulk*50)/100)/4)))
+                        break
+
+                    case "Vận động viên":
+                        $('#txtCalorieDay').text(data.BRM_5)
+                        $('#txtCalorieWeek').text(data.BRM_5 * 7)
+                        $('#BRM_result').text(data.BRM_5)
+                        var calorie_val = data.BRM_5
+                        var calorie_val_cut = data.BRM_5-500
+                        var calorie_val_bulk = data.BRM_5+500
+
+                        $('#nutrient_calorie_1').text(calorie_val)
+                        $('#nutrient_calorie_2').text(calorie_val_cut)
+                        $('#nutrient_calorie_3').text(calorie_val_bulk)
+
+
+                        $('#maintenance_protein_1').text(Math.round( parseFloat(((calorie_val*30)/100)/4)))
+                        $('#cut_protein_1').text(Math.round( parseFloat(((calorie_val_cut*30)/100)/4)))
+                        $('#bulk_protein_1').text(Math.round( parseFloat(((calorie_val_bulk*30)/100)/4)))
+                        $('#maintenance_protein_2').text(Math.round( parseFloat(((calorie_val*40)/100)/4)))
+                        $('#cut_protein_2').text(Math.round( parseFloat(((calorie_val_cut*40)/100)/4)))
+                        $('#bulk_protein_2').text(Math.round( parseFloat(((calorie_val_bulk*40)/100)/4)))
+                        $('#maintenance_protein_3').text(Math.round( parseFloat(((calorie_val*30)/100)/4)))
+                        $('#cut_protein_3').text(Math.round( parseFloat(((calorie_val_cut*30)/100)/4)))
+                        $('#bulk_protein_3').text(Math.round( parseFloat(((calorie_val_bulk*30)/100)/4)))
+
+                        $('#maintenance_fats_1').text(Math.round( parseFloat(((calorie_val*35)/100)/9)))
+                        $('#cut_fats_1').text(Math.round( parseFloat(((calorie_val_cut*35)/100)/9)))
+                        $('#bulk_fats_1').text(Math.round( parseFloat(((calorie_val_bulk*35)/100)/9)))
+                        $('#maintenance_fats_2').text(Math.round( parseFloat(((calorie_val*40)/100)/9)))
+                        $('#cut_fats_2').text(Math.round( parseFloat(((calorie_val_cut*40)/100)/9)))
+                        $('#bulk_fats_2').text(Math.round( parseFloat(((calorie_val_bulk*40)/100)/9)))
+                        $('#maintenance_fats_3').text(Math.round( parseFloat(((calorie_val*20)/100)/9)))
+                        $('#cut_fats_3').text(Math.round( parseFloat(((calorie_val_cut*20)/100)/9)))
+                        $('#bulk_fats_3').text(Math.round( parseFloat(((calorie_val_bulk*20)/100)/9)))
+
+                        $('#maintenance_carb_1').text(Math.round( parseFloat(((calorie_val*35)/100)/4)))
+                        $('#cut_carb_1').text(Math.round( parseFloat(((calorie_val_cut*35)/100)/4)))
+                        $('#bulk_carb_1').text(Math.round( parseFloat(((calorie_val_bulk*35)/100)/4)))
+                        $('#maintenance_carb_2').text(Math.round( parseFloat(((calorie_val*20)/100)/4)))
+                        $('#cut_carb_2').text(Math.round( parseFloat(((calorie_val_cut*20)/100)/4)))
+                        $('#bulk_carb_2').text(Math.round( parseFloat(((calorie_val_bulk*20)/100)/4)))
+                        $('#maintenance_carb_3').text(Math.round( parseFloat(((calorie_val*50)/100)/4)))
+                        $('#cut_carb_3').text(Math.round( parseFloat(((calorie_val_cut*50)/100)/4)))
+                        $('#bulk_carb_3').text(Math.round( parseFloat(((calorie_val_bulk*50)/100)/4)))
+                        break
+                }
+                if(BMI_score<18.5)
+                {
+                    $('#BMI_commend').text("Suy dinh dưỡng")
+                    $('#BMI_row_1').css('font-weight', 'bold')
+                    $('#BMI_row_2').css('font-weight', 'normal')
+                    $('#BMI_row_3').css('font-weight', 'normal')
+                    $('#BMI_row_4').css('font-weight', 'normal')
+
+                }
+                else if (18.5<BMI_score && BMI_score<24.99)
+                {
+                    $('#BMI_commend').text("Cân nặng bình thường")
+                    $('#BMI_row_1').css('font-weight', 'normal')
+                    $('#BMI_row_2').css('font-weight', 'bold')
+                    $('#BMI_row_3').css('font-weight', 'normal')
+                    $('#BMI_row_4').css('font-weight', 'normal')
+                }
+                else if (25<BMI_score && BMI_score<29.99)
+                {
+                    $('#BMI_commend').text("Thừa cân")
+                    $('#BMI_row_1').css('font-weight', 'normal')
+                    $('#BMI_row_2').css('font-weight', 'normal')
+                    $('#BMI_row_3').css('font-weight', 'bold')
+                    $('#BMI_row_4').css('font-weight', 'normal')
+
+                }
+                else
+                {
+                    $('#BMI_commend').text("Béo phì")
+                    $('#BMI_row_1').css('font-weight', 'normal')
+                    $('#BMI_row_2').css('font-weight', 'normal')
+                    $('#BMI_row_3').css('font-weight', 'normal')
+                    $('#BMI_row_4').css('font-weight', 'bold')
+                }
+
+
+            },
+
+        });
+        switch (activity_val) {
+            case "Hoạt động nhẹ":
+                $('#BRM_col_1').css('font-weight', 'bold')
+                $('#BRM_col_2').css('font-weight', 'normal')
+                $('#BRM_col_3').css('font-weight', 'normal')
+                $('#BRM_col_4').css('font-weight', 'normal')
+                $('#BRM_col_5').css('font-weight', 'normal')
+                break
+
+            case "Hoạt động vừa ( 1 đến 3 lần/tuần )":
+                $('#BRM_col_1').css('font-weight', 'normal')
+                $('#BRM_col_2').css('font-weight', 'bold')
+                $('#BRM_col_3').css('font-weight', 'normal')
+                $('#BRM_col_4').css('font-weight', 'normal')
+                $('#BRM_col_5').css('font-weight', 'normal')
+                break
+
+            case "Hoạt động trung bình ( 3 đến 5 lần/tuần )":
+                $('#BRM_col_1').css('font-weight', 'normal')
+                $('#BRM_col_2').css('font-weight', 'normal')
+                $('#BRM_col_3').css('font-weight', 'bold')
+                $('#BRM_col_4').css('font-weight', 'normal')
+                $('#BRM_col_5').css('font-weight', 'normal')
+                break
+
+            case "Hoạt động nặng ( 6 đến 7 lần/tuần )":
+                $('#BRM_col_1').css('font-weight', 'normal')
+                $('#BRM_col_2').css('font-weight', 'normal')
+                $('#BRM_col_3').css('font-weight', 'normal')
+                $('#BRM_col_4').css('font-weight', 'bold')
+                $('#BRM_col_5').css('font-weight', 'normal')
+                break
+
+            case "Vận động viên":
+                $('#BRM_col_1').css('font-weight', 'normal')
+                $('#BRM_col_2').css('font-weight', 'normal')
+                $('#BRM_col_3').css('font-weight', 'normal')
+                $('#BRM_col_4').css('font-weight', 'normal')
+                $('#BRM_col_5').css('font-weight', 'bold')
+                break
+
+
+        }
+
+    });
+    jQuery(function ($) {
+        var age_val = @Model.Age;
+        var weight_val = @Model.Weight;
+        var height_val = @Model.Height;
+        var gender_val = '@Model.Gender';
+        var activity_val = '@Model.Activity';
+        $('#txtAge').val(age_val);
+        $('#txtWeight').val(weight_val);
+        $('#txtHeight').val(height_val);
+        $('#txtGender').val(gender_val);
+        $('#txtActivity').val(activity_val);
+      
+        $.ajax({
+            url: "http://localhost:2346/Service1.svc/BRM_calculate",
+            data: JSON.stringify({ gender: gender_val, age: age_val, weight: weight_val, height: height_val }),
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                $('#row0').text(data.BRM_0);
+                $('#row1').text(data.BRM_1);
+                $('#row2').text(data.BRM_2);
+                $('#row3').text(data.BRM_3);
+                $('#row4').text(data.BRM_4);
+                $('#row5').text(data.BRM_5);
+
+                $('#Hamwi_weight_result').text(data.Hamwi_weight);
+                $('#Miller_weight_result').text(data.Miller_weight);
+                var BMI_score = data.BMI;
+                $('#BMI_result').text(BMI_score);
+                $('#BMI').text(BMI_score);
+                $('#Weight_col_1').text(data.Hamwi_weight);
+                $('#Weight_col_2').text(data.Devine_weight);
+                $('#Weight_col_3').text(data.Robinson_weight);
+                $('#Weight_col_4').text(data.Miller_weight);
+                $('#Hamwi_weight').text(data.Hamwi_weight);
+                $('#Miller_weight').text(data.Miller_weight);
+
+                switch(activity_val)
+                {
+                    case "Hoạt động nhẹ":
+                        $('#txtCalorieDay').text(data.BRM_1)
+                        $('#txtCalorieWeek').text(data.BRM_1 * 7)
+                        $('#BRM_result').text(data.BRM_1)
+                        var calorie_val = data.BRM_1
+                        var calorie_val_cut = data.BRM_1-500
+                        var calorie_val_bulk = data.BRM_1+500
+                        $('#nutrient_calorie_1').text(calorie_val)
+                        $('#nutrient_calorie_2').text(calorie_val_cut)
+                        $('#nutrient_calorie_3').text(calorie_val_bulk)
+
+
+                        $('#maintenance_protein_1').text(Math.round( parseFloat(((calorie_val*30)/100)/4)))
+                        $('#cut_protein_1').text(Math.round( parseFloat(((calorie_val_cut*30)/100)/4)))
+                        $('#bulk_protein_1').text(Math.round( parseFloat(((calorie_val_bulk*30)/100)/4)))
+                        $('#maintenance_protein_2').text(Math.round( parseFloat(((calorie_val*40)/100)/4)))
+                        $('#cut_protein_2').text(Math.round( parseFloat(((calorie_val_cut*40)/100)/4)))
+                        $('#bulk_protein_2').text(Math.round( parseFloat(((calorie_val_bulk*40)/100)/4)))
+                        $('#maintenance_protein_3').text(Math.round( parseFloat(((calorie_val*30)/100)/4)))
+                        $('#cut_protein_3').text(Math.round( parseFloat(((calorie_val_cut*30)/100)/4)))
+                        $('#bulk_protein_3').text(Math.round( parseFloat(((calorie_val_bulk*30)/100)/4)))
+
+                        $('#maintenance_fats_1').text(Math.round( parseFloat(((calorie_val*35)/100)/9)))
+                        $('#cut_fats_1').text(Math.round( parseFloat(((calorie_val_cut*35)/100)/9)))
+                        $('#bulk_fats_1').text(Math.round( parseFloat(((calorie_val_bulk*35)/100)/9)))
+                        $('#maintenance_fats_2').text(Math.round( parseFloat(((calorie_val*40)/100)/9)))
+                        $('#cut_fats_2').text(Math.round( parseFloat(((calorie_val_cut*40)/100)/9)))
+                        $('#bulk_fats_2').text(Math.round( parseFloat(((calorie_val_bulk*40)/100)/9)))
+                        $('#maintenance_fats_3').text(Math.round( parseFloat(((calorie_val*20)/100)/9)))
+                        $('#cut_fats_3').text(Math.round( parseFloat(((calorie_val_cut*20)/100)/9)))
+                        $('#bulk_fats_3').text(Math.round( parseFloat(((calorie_val_bulk*20)/100)/9)))
+
+                        $('#maintenance_carb_1').text(Math.round( parseFloat(((calorie_val*35)/100)/4)))
+                        $('#cut_carb_1').text(Math.round( parseFloat(((calorie_val_cut*35)/100)/4)))
+                        $('#bulk_carb_1').text(Math.round( parseFloat(((calorie_val_bulk*35)/100)/4)))
+                        $('#maintenance_carb_2').text(Math.round( parseFloat(((calorie_val*20)/100)/4)))
+                        $('#cut_carb_2').text(Math.round( parseFloat(((calorie_val_cut*20)/100)/4)))
+                        $('#bulk_carb_2').text(Math.round( parseFloat(((calorie_val_bulk*20)/100)/4)))
+                        $('#maintenance_carb_3').text(Math.round( parseFloat(((calorie_val*50)/100)/4)))
+                        $('#cut_carb_3').text(Math.round( parseFloat(((calorie_val_cut*50)/100)/4)))
+                        $('#bulk_carb_3').text(Math.round( parseFloat(((calorie_val_bulk*50)/100)/4)))
+
+
+                        break
+
+                    case "Hoạt động vừa ( 1 đến 3 lần/tuần )":
+                        $('#txtCalorieDay').text(data.BRM_2)
+                        $('#txtCalorieWeek').text(data.BRM_2 * 7)
+                        $('#BRM_result').text(data.BRM_2)
+                        var calorie_val = data.BRM_2
+                        var calorie_val_cut = data.BRM_2-500
+                        var calorie_val_bulk = data.BRM_2+500
+                        $('#nutrient_calorie_1').text(calorie_val)
+                        $('#nutrient_calorie_2').text(calorie_val_cut)
+                        $('#nutrient_calorie_3').text(calorie_val_bulk)
+
+
+                        $('#maintenance_protein_1').text(Math.round( parseFloat(((calorie_val*30)/100)/4)))
+                        $('#cut_protein_1').text(Math.round( parseFloat(((calorie_val_cut*30)/100)/4)))
+                        $('#bulk_protein_1').text(Math.round( parseFloat(((calorie_val_bulk*30)/100)/4)))
+                        $('#maintenance_protein_2').text(Math.round( parseFloat(((calorie_val*40)/100)/4)))
+                        $('#cut_protein_2').text(Math.round( parseFloat(((calorie_val_cut*40)/100)/4)))
+                        $('#bulk_protein_2').text(Math.round( parseFloat(((calorie_val_bulk*40)/100)/4)))
+                        $('#maintenance_protein_3').text(Math.round( parseFloat(((calorie_val*30)/100)/4)))
+                        $('#cut_protein_3').text(Math.round( parseFloat(((calorie_val_cut*30)/100)/4)))
+                        $('#bulk_protein_3').text(Math.round( parseFloat(((calorie_val_bulk*30)/100)/4)))
+
+                        $('#maintenance_fats_1').text(Math.round( parseFloat(((calorie_val*35)/100)/9)))
+                        $('#cut_fats_1').text(Math.round( parseFloat(((calorie_val_cut*35)/100)/9)))
+                        $('#bulk_fats_1').text(Math.round( parseFloat(((calorie_val_bulk*35)/100)/9)))
+                        $('#maintenance_fats_2').text(Math.round( parseFloat(((calorie_val*40)/100)/9)))
+                        $('#cut_fats_2').text(Math.round( parseFloat(((calorie_val_cut*40)/100)/9)))
+                        $('#bulk_fats_2').text(Math.round( parseFloat(((calorie_val_bulk*40)/100)/9)))
+                        $('#maintenance_fats_3').text(Math.round( parseFloat(((calorie_val*20)/100)/9)))
+                        $('#cut_fats_3').text(Math.round( parseFloat(((calorie_val_cut*20)/100)/9)))
+                        $('#bulk_fats_3').text(Math.round( parseFloat(((calorie_val_bulk*20)/100)/9)))
+
+                        $('#maintenance_carb_1').text(Math.round( parseFloat(((calorie_val*35)/100)/4)))
+                        $('#cut_carb_1').text(Math.round( parseFloat(((calorie_val_cut*35)/100)/4)))
+                        $('#bulk_carb_1').text(Math.round( parseFloat(((calorie_val_bulk*35)/100)/4)))
+                        $('#maintenance_carb_2').text(Math.round( parseFloat(((calorie_val*20)/100)/4)))
+                        $('#cut_carb_2').text(Math.round( parseFloat(((calorie_val_cut*20)/100)/4)))
+                        $('#bulk_carb_2').text(Math.round( parseFloat(((calorie_val_bulk*20)/100)/4)))
+                        $('#maintenance_carb_3').text(Math.round( parseFloat(((calorie_val*50)/100)/4)))
+                        $('#cut_carb_3').text(Math.round( parseFloat(((calorie_val_cut*50)/100)/4)))
+                        $('#bulk_carb_3').text(Math.round( parseFloat(((calorie_val_bulk*50)/100)/4)))
+                        break
+
+                    case "Hoạt động trung bình ( 3 đến 5 lần/tuần )":
+                        $('#txtCalorieDay').text(data.BRM_3)
+                        $('#txtCalorieWeek').text(data.BRM_3 * 7)
+                        $('#BRM_result').text(data.BRM_3)
+                        var calorie_val = data.BRM_3
+                        var calorie_val_cut = data.BRM_3-500
+                        var calorie_val_bulk = data.BRM_3+500
+                        $('#nutrient_calorie_1').text(calorie_val)
+                        $('#nutrient_calorie_2').text(calorie_val_cut)
+                        $('#nutrient_calorie_3').text(calorie_val_bulk)
+
+
+                        $('#maintenance_protein_1').text(Math.round( parseFloat(((calorie_val*30)/100)/4)))
+                        $('#cut_protein_1').text(Math.round( parseFloat(((calorie_val_cut*30)/100)/4)))
+                        $('#bulk_protein_1').text(Math.round( parseFloat(((calorie_val_bulk*30)/100)/4)))
+                        $('#maintenance_protein_2').text(Math.round( parseFloat(((calorie_val*40)/100)/4)))
+                        $('#cut_protein_2').text(Math.round( parseFloat(((calorie_val_cut*40)/100)/4)))
+                        $('#bulk_protein_2').text(Math.round( parseFloat(((calorie_val_bulk*40)/100)/4)))
+                        $('#maintenance_protein_3').text(Math.round( parseFloat(((calorie_val*30)/100)/4)))
+                        $('#cut_protein_3').text(Math.round( parseFloat(((calorie_val_cut*30)/100)/4)))
+                        $('#bulk_protein_3').text(Math.round( parseFloat(((calorie_val_bulk*30)/100)/4)))
+
+                        $('#maintenance_fats_1').text(Math.round( parseFloat(((calorie_val*35)/100)/9)))
+                        $('#cut_fats_1').text(Math.round( parseFloat(((calorie_val_cut*35)/100)/9)))
+                        $('#bulk_fats_1').text(Math.round( parseFloat(((calorie_val_bulk*35)/100)/9)))
+                        $('#maintenance_fats_2').text(Math.round( parseFloat(((calorie_val*40)/100)/9)))
+                        $('#cut_fats_2').text(Math.round( parseFloat(((calorie_val_cut*40)/100)/9)))
+                        $('#bulk_fats_2').text(Math.round( parseFloat(((calorie_val_bulk*40)/100)/9)))
+                        $('#maintenance_fats_3').text(Math.round( parseFloat(((calorie_val*20)/100)/9)))
+                        $('#cut_fats_3').text(Math.round( parseFloat(((calorie_val_cut*20)/100)/9)))
+                        $('#bulk_fats_3').text(Math.round( parseFloat(((calorie_val_bulk*20)/100)/9)))
+
+                        $('#maintenance_carb_1').text(Math.round( parseFloat(((calorie_val*35)/100)/4)))
+                        $('#cut_carb_1').text(Math.round( parseFloat(((calorie_val_cut*35)/100)/4)))
+                        $('#bulk_carb_1').text(Math.round( parseFloat(((calorie_val_bulk*35)/100)/4)))
+                        $('#maintenance_carb_2').text(Math.round( parseFloat(((calorie_val*20)/100)/4)))
+                        $('#cut_carb_2').text(Math.round( parseFloat(((calorie_val_cut*20)/100)/4)))
+                        $('#bulk_carb_2').text(Math.round( parseFloat(((calorie_val_bulk*20)/100)/4)))
+                        $('#maintenance_carb_3').text(Math.round( parseFloat(((calorie_val*50)/100)/4)))
+                        $('#cut_carb_3').text(Math.round( parseFloat(((calorie_val_cut*50)/100)/4)))
+                        $('#bulk_carb_3').text(Math.round( parseFloat(((calorie_val_bulk*50)/100)/4)))
+                        break
+
+                    case "Hoạt động nặng ( 6 đến 7 lần/tuần )":
+                        $('#txtCalorieDay').text(data.BRM_4)
+                        $('#txtCalorieWeek').text(data.BRM_4 * 7)
+                        $('#BRM_result').text(data.BRM_4)
+                        var calorie_val = data.BRM_4
+                        var calorie_val_cut = data.BRM_4-500
+                        var calorie_val_bulk = data.BRM_4+500
+                        $('#nutrient_calorie_1').text(calorie_val)
+                        $('#nutrient_calorie_2').text(calorie_val_cut)
+                        $('#nutrient_calorie_3').text(calorie_val_bulk)
+
+
+                        $('#maintenance_protein_1').text(Math.round( parseFloat(((calorie_val*30)/100)/4)))
+                        $('#cut_protein_1').text(Math.round( parseFloat(((calorie_val_cut*30)/100)/4)))
+                        $('#bulk_protein_1').text(Math.round( parseFloat(((calorie_val_bulk*30)/100)/4)))
+                        $('#maintenance_protein_2').text(Math.round( parseFloat(((calorie_val*40)/100)/4)))
+                        $('#cut_protein_2').text(Math.round( parseFloat(((calorie_val_cut*40)/100)/4)))
+                        $('#bulk_protein_2').text(Math.round( parseFloat(((calorie_val_bulk*40)/100)/4)))
+                        $('#maintenance_protein_3').text(Math.round( parseFloat(((calorie_val*30)/100)/4)))
+                        $('#cut_protein_3').text(Math.round( parseFloat(((calorie_val_cut*30)/100)/4)))
+                        $('#bulk_protein_3').text(Math.round( parseFloat(((calorie_val_bulk*30)/100)/4)))
+
+                        $('#maintenance_fats_1').text(Math.round( parseFloat(((calorie_val*35)/100)/9)))
+                        $('#cut_fats_1').text(Math.round( parseFloat(((calorie_val_cut*35)/100)/9)))
+                        $('#bulk_fats_1').text(Math.round( parseFloat(((calorie_val_bulk*35)/100)/9)))
+                        $('#maintenance_fats_2').text(Math.round( parseFloat(((calorie_val*40)/100)/9)))
+                        $('#cut_fats_2').text(Math.round( parseFloat(((calorie_val_cut*40)/100)/9)))
+                        $('#bulk_fats_2').text(Math.round( parseFloat(((calorie_val_bulk*40)/100)/9)))
+                        $('#maintenance_fats_3').text(Math.round( parseFloat(((calorie_val*20)/100)/9)))
+                        $('#cut_fats_3').text(Math.round( parseFloat(((calorie_val_cut*20)/100)/9)))
+                        $('#bulk_fats_3').text(Math.round( parseFloat(((calorie_val_bulk*20)/100)/9)))
+
+                        $('#maintenance_carb_1').text(Math.round( parseFloat(((calorie_val*35)/100)/4)))
+                        $('#cut_carb_1').text(Math.round( parseFloat(((calorie_val_cut*35)/100)/4)))
+                        $('#bulk_carb_1').text(Math.round( parseFloat(((calorie_val_bulk*35)/100)/4)))
+                        $('#maintenance_carb_2').text(Math.round( parseFloat(((calorie_val*20)/100)/4)))
+                        $('#cut_carb_2').text(Math.round( parseFloat(((calorie_val_cut*20)/100)/4)))
+                        $('#bulk_carb_2').text(Math.round( parseFloat(((calorie_val_bulk*20)/100)/4)))
+                        $('#maintenance_carb_3').text(Math.round( parseFloat(((calorie_val*50)/100)/4)))
+                        $('#cut_carb_3').text(Math.round( parseFloat(((calorie_val_cut*50)/100)/4)))
+                        $('#bulk_carb_3').text(Math.round( parseFloat(((calorie_val_bulk*50)/100)/4)))
+                        break
+
+                    case "Vận động viên":
+                        $('#txtCalorieDay').text(data.BRM_5)
+                        $('#txtCalorieWeek').text(data.BRM_5 * 7)
+                        $('#BRM_result').text(data.BRM_5)
+                        var calorie_val = data.BRM_5
+                        var calorie_val_cut = data.BRM_5-500
+                        var calorie_val_bulk = data.BRM_5+500
+                        $('#nutrient_calorie_1').text(calorie_val)
+                        $('#nutrient_calorie_2').text(calorie_val_cut)
+                        $('#nutrient_calorie_3').text(calorie_val_bulk)
+
+
+                        $('#maintenance_protein_1').text(Math.round( parseFloat(((calorie_val*30)/100)/4)))
+                        $('#cut_protein_1').text(Math.round( parseFloat(((calorie_val_cut*30)/100)/4)))
+                        $('#bulk_protein_1').text(Math.round( parseFloat(((calorie_val_bulk*30)/100)/4)))
+                        $('#maintenance_protein_2').text(Math.round( parseFloat(((calorie_val*40)/100)/4)))
+                        $('#cut_protein_2').text(Math.round( parseFloat(((calorie_val_cut*40)/100)/4)))
+                        $('#bulk_protein_2').text(Math.round( parseFloat(((calorie_val_bulk*40)/100)/4)))
+                        $('#maintenance_protein_3').text(Math.round( parseFloat(((calorie_val*30)/100)/4)))
+                        $('#cut_protein_3').text(Math.round( parseFloat(((calorie_val_cut*30)/100)/4)))
+                        $('#bulk_protein_3').text(Math.round( parseFloat(((calorie_val_bulk*30)/100)/4)))
+
+                        $('#maintenance_fats_1').text(Math.round( parseFloat(((calorie_val*35)/100)/9)))
+                        $('#cut_fats_1').text(Math.round( parseFloat(((calorie_val_cut*35)/100)/9)))
+                        $('#bulk_fats_1').text(Math.round( parseFloat(((calorie_val_bulk*35)/100)/9)))
+                        $('#maintenance_fats_2').text(Math.round( parseFloat(((calorie_val*40)/100)/9)))
+                        $('#cut_fats_2').text(Math.round( parseFloat(((calorie_val_cut*40)/100)/9)))
+                        $('#bulk_fats_2').text(Math.round( parseFloat(((calorie_val_bulk*40)/100)/9)))
+                        $('#maintenance_fats_3').text(Math.round( parseFloat(((calorie_val*20)/100)/9)))
+                        $('#cut_fats_3').text(Math.round( parseFloat(((calorie_val_cut*20)/100)/9)))
+                        $('#bulk_fats_3').text(Math.round( parseFloat(((calorie_val_bulk*20)/100)/9)))
+
+                        $('#maintenance_carb_1').text(Math.round( parseFloat(((calorie_val*35)/100)/4)))
+                        $('#cut_carb_1').text(Math.round( parseFloat(((calorie_val_cut*35)/100)/4)))
+                        $('#bulk_carb_1').text(Math.round( parseFloat(((calorie_val_bulk*35)/100)/4)))
+                        $('#maintenance_carb_2').text(Math.round( parseFloat(((calorie_val*20)/100)/4)))
+                        $('#cut_carb_2').text(Math.round( parseFloat(((calorie_val_cut*20)/100)/4)))
+                        $('#bulk_carb_2').text(Math.round( parseFloat(((calorie_val_bulk*20)/100)/4)))
+                        $('#maintenance_carb_3').text(Math.round( parseFloat(((calorie_val*50)/100)/4)))
+                        $('#cut_carb_3').text(Math.round( parseFloat(((calorie_val_cut*50)/100)/4)))
+                        $('#bulk_carb_3').text(Math.round( parseFloat(((calorie_val_bulk*50)/100)/4)))
+                        break
+                }
+                if(BMI_score<18.5)
+                {
+                    $('#BMI_commend').text("Suy dinh dưỡng")
+                    $('#BMI_row_1').css('font-weight', 'bold')
+                    $('#BMI_row_2').css('font-weight', 'normal')
+                    $('#BMI_row_3').css('font-weight', 'normal')
+                    $('#BMI_row_4').css('font-weight', 'normal')
+
+                }
+                else if (18.5<BMI_score && BMI_score<24.99)
+                {
+                    $('#BMI_commend').text("Cân nặng bình thường")
+                    $('#BMI_row_1').css('font-weight', 'normal')
+                    $('#BMI_row_2').css('font-weight', 'bold')
+                    $('#BMI_row_3').css('font-weight', 'normal')
+                    $('#BMI_row_4').css('font-weight', 'normal')
+                }
+                else if (25<BMI_score && BMI_score<29.99)
+                {
+                    $('#BMI_commend').text("Thừa cân")
+                    $('#BMI_row_1').css('font-weight', 'normal')
+                    $('#BMI_row_2').css('font-weight', 'normal')
+                    $('#BMI_row_3').css('font-weight', 'bold')
+                    $('#BMI_row_4').css('font-weight', 'normal')
+
+                }
+                else
+                {
+                    $('#BMI_commend').text("Báo phì")
+                    $('#BMI_row_1').css('font-weight', 'normal')
+                    $('#BMI_row_2').css('font-weight', 'normal')
+                    $('#BMI_row_3').css('font-weight', 'normal')
+                    $('#BMI_row_4').css('font-weight', 'bold')
+                }
+
+            },
+
+        });
+        switch (activity_val) {
+            case "Hoạt động nhẹ":
+                $('#BRM_col_1').css('font-weight', 'bold')
+                $('#BRM_col_2').css('font-weight', 'normal')
+                $('#BRM_col_3').css('font-weight', 'normal')
+                $('#BRM_col_4').css('font-weight', 'normal')
+                $('#BRM_col_5').css('font-weight', 'normal')
+                break
+
+            case "Hoạt động vừa ( 1 đến 3 lần/tuần )":
+                $('#BRM_col_1').css('font-weight', 'normal')
+                $('#BRM_col_2').css('font-weight', 'bold')
+                $('#BRM_col_3').css('font-weight', 'normal')
+                $('#BRM_col_4').css('font-weight', 'normal')
+                $('#BRM_col_5').css('font-weight', 'normal')
+                break
+
+            case "Hoạt động trung bình ( 3 đến 5 lần/tuần )":
+                $('#BRM_col_1').css('font-weight', 'normal')
+                $('#BRM_col_2').css('font-weight', 'normal')
+                $('#BRM_col_3').css('font-weight', 'bold')
+                $('#BRM_col_4').css('font-weight', 'normal')
+                $('#BRM_col_5').css('font-weight', 'normal')
+                break
+
+            case "Hoạt động nặng ( 6 đến 7 lần/tuần )":
+                $('#BRM_col_1').css('font-weight', 'normal')
+                $('#BRM_col_2').css('font-weight', 'normal')
+                $('#BRM_col_3').css('font-weight', 'normal')
+                $('#BRM_col_4').css('font-weight', 'bold')
+                $('#BRM_col_5').css('font-weight', 'normal')
+                break
+
+            case "Vận động viên":
+                $('#BRM_col_1').css('font-weight', 'normal')
+                $('#BRM_col_2').css('font-weight', 'normal')
+                $('#BRM_col_3').css('font-weight', 'normal')
+                $('#BRM_col_4').css('font-weight', 'normal')
+                $('#BRM_col_5').css('font-weight', 'bold')
+                break
+
+
+        }
+    })(jQuery);
+
+
+
+</script>
+<script>
+    $(document).ready(function(){
+        $("#txtAge").css('border-bottom', '2px solid #34F458');
+        $("#txtWeight").css('border-bottom', '2px solid #34F458');
+        $("#txtHeight").css('border-bottom', '2px solid #34F458');
+        $('#txtAge').keyup(function(){
+            var pattern = /^\d+$/;
+            if(pattern.test($(this).val()) && $(this).val()!='' ){
+
+                $("#age_error_message").hide();
+                $("#txtAge").css('border-bottom', '2px solid #34F458');
+
+            }
+            else if ($(this).val() =='') {
+                $("#age_error_message").html("Please enter your age");
+                $("#age_error_message").show();
+                $("#txtAge").css('border-bottom', '2px solid #F90A0A');
+
+
+            }
+            else {
+                $("#age_error_message").html("Should contain number only");
+                $("#age_error_message").show();
+                $("#txtAge").css('border-bottom', '2px solid #F90A0A');
+
+            }
+
+        });
+        $('#txtWeight').keyup(function(){
+            var pattern = /^[0-9]*\.?[0-9]*$/;
+            if(pattern.test($(this).val()) && $(this).val()!='' ){
+
+                $("#weight_error_message").hide();
+                $("#txtWeight").css('border-bottom', '2px solid #34F458');
+
+            }
+            else if ($(this).val() =='') {
+                $("#weight_error_message").html("Please enter your weight");
+                $("#weight_error_message").show();
+                $("#txtWeight").css('border-bottom', '2px solid #F90A0A');
+
+
+            }
+
+            else {
+                $("#weight_error_message").html("Should contain number only");
+                $("#weight_error_message").show();
+                $("#txtWeight").css('border-bottom', '2px solid #F90A0A');
+
+            }
+
+        });
+        $('#txtHeight').keyup(function(){
+            var pattern = /^\d+$/;
+            if(pattern.test($(this).val()) && $(this).val()!='' ){
+
+                $("#height_error_message").hide();
+                $("#txtHeight").css('border-bottom', '2px solid #34F458');
+
+            }
+            else if ($(this).val() =='') {
+                $("#height_error_message").html("Please enter your height");
+                $("#height_error_message").show();
+                $("#txtHeight").css('border-bottom', '2px solid #F90A0A');
+
+
+            }
+
+            else {
+                $("#height_error_message").html("Should contain number only");
+                $("#height_error_message").show();
+                $("#txtHeight").css('border-bottom', '2px solid #F90A0A');
+
+            }
+
+        });
+
+
+
+
+    });
+</script>
+<script>
+    $(function(){
+        $( "#txtAge" ).change(function() {
+            var max = parseInt($(this).attr('max'));
+            var min = parseInt($(this).attr('min'));
+            if ($(this).val() > max)
+            {
+                $(this).val(max);
+            }
+            else if ($(this).val() < min)
+            {
+                $(this).val(min);
+            }
+        });
+        $( "#txtWeight" ).change(function() {
+            var max = parseInt($(this).attr('max'));
+            var min = parseInt($(this).attr('min'));
+            if ($(this).val() > max)
+            {
+                $(this).val(max);
+            }
+            else if ($(this).val() < min)
+            {
+                $(this).val(min);
+            }
+        });
+        $( "#txtHeight" ).change(function() {
+            var max = parseInt($(this).attr('max'));
+            var min = parseInt($(this).attr('min'));
+            if ($(this).val() > max)
+            {
+                $(this).val(max);
+            }
+            else if ($(this).val() < min)
+            {
+                $(this).val(min);
+            }
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(function () {
+        $("#age_error_message").hide();
+        $("#weight_error_message").hide();
+        $("#height_error_message").hide();
+
+        var error_age = false;
+        var error_weight = false;
+        var error_height = false;
+
+        $("#txtAge").focusout(function () {
+            check_age();
+
+        });
+        $("#txtWeight").focusout(function () {
+            check_weight();
+
+        });
+        $("#txtHeight").focusout(function () {
+            check_height();
+
+        });
+
+        function check_age()
+        {
+            var pattern = /^\d+$/;
+            var age = $('#txtAge').val();
+            if(pattern.test(age)&& age!=='')
+            {
+                $("#age_error_message").hide();
+                $("#txtAge").css('border-bottom', '2px solid #34F458');
+
+            }
+            else
+            {
+                if (age == '') {
+                    $("#age_error_message").html("Please enter your age");
+                    $("#age_error_message").show();
+                    $("#txtAge").css('border-bottom', '2px solid #F90A0A');
+                    error_age = true;
+                }
+                else
+                {
+                    $("#age_error_message").html("Please insert number only");
+                    $("#age_error_message").show();
+                    $("#txtAge").css('border-bottom', '2px solid #F90A0A');
+                    error_age = true;
+                }
+            }
+        }
+
+        function check_weight()
+        {
+            var pattern = /^[0-9]*\.?[0-9]*$/;
+            var weight = $("#txtWeight").val();
+            if (pattern.test(weight) && weight !=='') {
+                $("#weight_error_message").hide();
+                $("#txtWeight").css('border-bottom', '2px solid #34F458');
+
+            }
+            else if (weight =='') {
+                $("#weight_error_message").html("Please enter your weight");
+                $("#weight_error_message").show();
+                $("#txtWeight").css('border-bottom', '2px solid #F90A0A');
+                error_weight = true;
+            }
+            else {
+                $("#weight_error_message").html("Should contain number only");
+                $("#weight_error_message").show();
+                $("#txtWeight").css('border-bottom', '2px solid #F90A0A');
+                error_weight = true;
+            }
+        }
+
+        function check_height() {
+            var pattern = /^\d+$/;
+            var height = $("#txtHeight").val();
+            if (pattern.test(height) && height !== '') {
+                $("#height_error_message").hide();
+                $("#txtHeight").css('border-bottom', '2px solid #34F458');
+
+            }
+            else if (height == '') {
+                $("#height_error_message").html("Please enter your weight");
+                $("#height_error_message").show();
+                $("#txtHeight").css('border-bottom', '2px solid #F90A0A');
+                error_height = true;
+            }
+            else {
+                $("#height_error_message").html("Should contain number only");
+                $("#height_error_message").show();
+                $("#txtHeight").css('border-bottom', '2px solid #F90A0A');
+                error_height = true;
+            }
+        }
+
+        $("#re_calculate").click(function () {
+
+            error_age = false;
+            error_weight = false;
+            error_height = false;
+
+
+
+            check_age();
+            check_weight();
+            check_height();
+
+            if(error_age==false && error_weight==false && error_height==false )
+            {
+                alert("Successful calculate")
+
+                return true;
+            }
+            else {
+                alert("Please fill your info correctly")
+                return false;
+            }
+
+        });
+
+
+
+
+
+
+
+
+    });
+
+</script>
+<script>
+    function myFunction() {
+        window.print();
+    }
+</script>
+
+<style type="text/css">
+    #re_calculate {
+        border-radius: 50px;
+        background-color: #41caf7;
+        cursor: pointer;
+    }
+
+        #re_calculate:hover {
+            background-color: #84c639;
+        }
+
+    #tabBRM {
+        border-top: 0.5px solid;
+    }
+
+        #tabBRM td {
+            border-bottom: 0.5px solid;
+        }
+
+    #calorie_panel {
+        border-radius: 25px;
+    }
+</style>
+
+
+
+
+
+

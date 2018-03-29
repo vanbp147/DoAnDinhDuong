@@ -1,0 +1,173 @@
+﻿@model Model.EF.Quanly
+
+@{
+    ViewBag.Title = "Thêm người quản lý";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section header{
+    Cập nhật thông tin
+}
+@section jsCarday{
+    <script src="/Asset/admin/js/Carday/calendar-en.min.js"></script>
+    <script src="/Asset/admin/js/Carday/jquery.dynDateTime.min.js" type="text/javascript"></script>
+    <script src="/Asset/admin/js/Carday/calendar-en.min.js" type="text/javascript"></script>
+    <link href="/Asset/admin/js/Carday/calendar-blue.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#TextBox1").dynDateTime({
+                showsTime: true,
+                ifFormat: "%Y-%m-%d %H:%M",
+                daFormat: "%l;%M %p, %e %m, %Y",
+                align: "BR",
+                electric: false,
+                singleClick: false,
+                displayArea: ".siblings('.dtcDisplayArea')",
+                button: ".next()"
+            });
+        });
+    </script>
+}
+@section jsFooter{
+    <script>
+        $('#btnSelectImage').on('click', function (e) {
+            e.preventDefault();
+            var finder = new CKFinder();
+            finder.selectActionFunction = function (url) {
+                $('#txtImage').val(url);
+            };
+            finder.popup();
+        })
+    </script>
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="card">
+                <div class="card-header">
+                    Nhập thông tin.
+                </div>
+                <div class="card-body">
+                    <div class="col-lg-6">
+                        @using (Html.BeginForm("Edit", "Quanly", FormMethod.Post))
+                        { @Html.HiddenFor(model => model.ID_Quanly)
+                            @Html.AntiForgeryToken()
+                            <div class="form-group">
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                            </div>
+                            <div class="form-group">
+                                <div class="editor-label">
+                                    Tài khoản
+                                </div>
+                                @Html.TextBoxFor(model => model.Taikhoan, new { @class = "form-control", @placehoder = "", @autofocus = "autofocus" })
+                                @Html.ValidationMessageFor(model => model.Taikhoan, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group">
+                                <div class="editor-label">
+                                    Mật khẩu
+                                </div>
+                                <div class="editor-field">
+                                    @Html.PasswordFor(model => model.Matkhau, new { @class = "form-control", @placehoder = "", @autofocus = "autofocus" })
+                                    @Html.ValidationMessageFor(model => model.Matkhau)
+                                </div>
+                            </div>
+
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.Matkhauxacnhan)
+                            </div>
+                            <div class="editor-field">
+                                @Html.PasswordFor(model => model.Matkhauxacnhan, new { @class = "form-control", @placehoder = "", @autofocus = "autofocus" })
+                                @Html.ValidationMessageFor(model => model.Matkhauxacnhan)
+                            </div>
+
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.Hoten)
+                            </div>
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.Hoten, new { @class = "form-control", @placehoder = " ", @autofocus = "autofocus" })
+                                @Html.ValidationMessageFor(model => model.Hoten)
+                            </div>
+
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.Diachi)
+                            </div>
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.Diachi, new { @class = "form-control", @placehoder = " ", @autofocus = "autofocus" })
+                                @Html.ValidationMessageFor(model => model.Diachi)
+                            </div>
+
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.Ngaysinh)
+                            </div>
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.Ngaysinh, new { HtmlAtrributes = new { @class = "form-control", @placehoder = " ", @autofocus = "autofocus" }, id = "TextBox1" })
+                                <img src="/Asset/admin/js/Carday/calender.png" />
+
+                                @Html.ValidationMessageFor(model => model.Ngaysinh)
+                            </div>
+
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.Gioitinh)
+                            </div>
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.Gioitinh, new { @class = "form-control", @placehoder = "", @autofocus = "autofocus" })
+                                @Html.ValidationMessageFor(model => model.Gioitinh)
+                            </div>
+
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.Email)
+                            </div>
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placehoder = " ", @autofocus = "autofocus" })
+                                @Html.ValidationMessageFor(model => model.Email)
+                            </div>
+
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.CMND)
+                            </div>
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.CMND, new { @class = "form-control", @placehoder = " ", @autofocus = "autofocus" })
+                                @Html.ValidationMessageFor(model => model.CMND)
+                            </div>
+
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.SDT)
+                            </div>
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.SDT, new { @class = "form-control", @placehoder = " ", @autofocus = "autofocus" })
+                                @Html.ValidationMessageFor(model => model.SDT)
+                            </div>
+
+
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.Images)
+                            </div>
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.Images, new { HtmlAtrributes = new { @class = "form-control", @placehoder = " ", @autofocus = "autofocus" }, id = "txtImage" })
+                                new {  id = "txtImage" })
+
+                                <a id="btnSelectImage" href="#">Chọn ảnh</a>
+                                @Html.ValidationMessageFor(model => model.Images)
+                            </div>
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.Status)
+                            </div>
+                            <div class="editor-field">
+                                @Html.EditorFor(model => model.Status)
+                                @Html.ValidationMessageFor(model => model.Status)
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block"> Sửa </button>
+
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

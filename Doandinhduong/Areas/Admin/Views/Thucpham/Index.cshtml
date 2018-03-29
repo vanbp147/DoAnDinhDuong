@@ -1,0 +1,89 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@model PagedList.IPagedList<Model.EF.Thucpham>
+@using PagedList.Mvc;
+
+@section header{
+    Danh sách thực phẩm
+}
+<!-- Breadcrumbs-->
+<ol class="breadcrumb">
+    <li class="nav-item">
+        @using (Html.BeginForm("Index", "Thucpham", FormMethod.Get, new { @class = "form-inline my-2 my-lg-0 mr-lg-2" }))
+        {
+            <div class="input-group">
+                <input name="searchString" value="@ViewBag.SearchString" class="form-control" type="text" placeholder="Search for...">
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </span>
+            </div>
+            <div class="col-md-4 offset-md-4">
+                <a href="/Admin/Thucpham/Create" class="btn btn-success">Thêm thực phẩm</a>
+            </div>
+
+        }
+
+    </li>
+</ol>
+<!-- Icon Cards-->
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fa fa-table"></i> Thông tin thực phẩm.
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Tên thực phẩm</th>
+                        <th scope="col">Hình ảnh</th>
+                        <th scope="col">Calories</th>
+                        <th scope="col">Total_Fat</th>
+                        <th scope="col">Cholesterol</th>
+                        <th scope="col">Sodium</th>
+                        <th scope="col">Total_Carbohydrate</th>
+                        <th scope="col">Total_Sugar</th>
+                        <th scope="col">Protein</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr id="row_@item.ID_thucpham">
+
+                            <td>
+                                <a href="/Admin/Thucpham/Edit/@item.ID_thucpham">Sửa</a>
+                                @Ajax.ActionLink("Xóa", "Delete", new { @id = item.ID_thucpham }, new AjaxOptions
+                           {
+                               Confirm = "Bạn có muốn xóa bản ghi này?",
+                               OnComplete = "$('#row_" + @item.ID_thucpham + "').remove()",
+                               HttpMethod = "Delete"
+                           })
+
+                            </td>
+                            <td>@item.Ten_thucpham</td>
+                            <td><img class="img-rounded" style="width: 80px;height: 80px;" src="@item.Image_thucpham" /></td>                            
+                            <td>@item.Calories</td>
+                            <td>@item.Total_Fat</td>
+                            <td>@item.Cholesterol</td>
+                            <td>@item.Sodium</td>
+                            <td>@item.Total_Carbohydrate</td>
+                            <td>@item.Total_Sugar</td>
+                            <td>@item.Protein</td>                         
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            
+
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, @searchString = @ViewBag.SearchString }))
+
+        </div>
+    </div>
+</div>
+<link href="/Asset/admin/fixcss/fixcssADMIN.css" rel="stylesheet" />

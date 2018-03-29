@@ -1,0 +1,78 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@model PagedList.IPagedList<Model.EF.Tintuc>
+@using PagedList.Mvc;
+
+
+@section header{
+    Danh sách tin tức
+}
+<!-- Breadcrumbs-->
+<ol class="breadcrumb">
+    <li class="nav-item">
+        @using (Html.BeginForm("Index", "Tintuc", FormMethod.Get, new { @class = "form-inline my-2 my-lg-0 mr-lg-2" }))
+        {
+            <div class="input-group">
+                <input name="searchString" value="@ViewBag.SearchString" class="form-control" type="text" placeholder="Search for...">
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </span>
+            </div>
+            <div class="col-md-4 offset-md-4">
+                <a href="/Admin/Tintuc/Create" class="btn btn-success">Thêm tin tức</a>
+            </div>
+
+        }
+
+    </li>
+</ol>
+<!-- Icon Cards-->
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fa fa-table"></i> Thông tin
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Mô tả</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+
+                        <tr id="row_@item.ID">
+
+                            <td>
+                                <a href="/Admin/Tintuc/Edit/@item.ID">Sửa</a>
+                                @Ajax.ActionLink("Xóa", "Delete", new { @id = item.ID }, new AjaxOptions
+                           {
+                               Confirm = "Bạn có muốn xóa bản ghi này?",
+                               OnComplete = "$('#row_" + @item.ID + "').remove()",
+                               HttpMethod = "Delete"
+                           })
+
+                            </td>
+                            <td>@item.Name</td>
+                            <td>@Html.Raw(@item.Mota)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, @searchString = @ViewBag.SearchString }))
+
+        </div>
+    </div>
+</div>
+

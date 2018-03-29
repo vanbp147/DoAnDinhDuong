@@ -1,0 +1,72 @@
+﻿@model Model.EF.about
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>about</legend>
+
+        @Html.HiddenFor(model => model.ID)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Ten)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Ten)
+            @Html.ValidationMessageFor(model => model.Ten)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.MetaTitle)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.MetaTitle)
+            @Html.ValidationMessageFor(model => model.MetaTitle)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Images)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Images)
+            @Html.ValidationMessageFor(model => model.Images)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Mota)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Mota)
+            @Html.ValidationMessageFor(model => model.Mota)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Trangthai)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Trangthai)
+            @Html.ValidationMessageFor(model => model.Trangthai)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,9 @@
+D:\Doancuoiki\Doandinhduong\Common\bin\Debug\Common.dll
+D:\Doancuoiki\Doandinhduong\Common\bin\Debug\Common.pdb
+D:\Doancuoiki\Doandinhduong\Common\obj\Debug\Common.dll
+D:\Doancuoiki\Doandinhduong\Common\obj\Debug\Common.pdb
+G:\ASP.NET\Doandinhduong\Common\bin\Debug\Common.dll
+G:\ASP.NET\Doandinhduong\Common\bin\Debug\Common.pdb
+G:\ASP.NET\Doandinhduong\Common\obj\Debug\Common.csprojResolveAssemblyReference.cache
+G:\ASP.NET\Doandinhduong\Common\obj\Debug\Common.dll
+G:\ASP.NET\Doandinhduong\Common\obj\Debug\Common.pdb

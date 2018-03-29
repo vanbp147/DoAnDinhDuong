@@ -1,0 +1,451 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model Doandinhduong.Models.PersonStat
+@section fixstyle{
+
+}
+<!-- banner -->
+<div class="banner">
+    <div class="container">
+        <div class="w3l_banner_nav_right">
+            <section class="slider">
+                <div class="flexslider">
+                    <ul class="slides">
+                        <li>
+                            <div class="w3l_banner_nav_right_banner">
+                                <h3>Chế độ <span>dinh dưỡng</span> lành mạnh</h3>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="w3l_banner_nav_right_banner1">
+                                <h3>Thực phẩm  <span> dinh dưỡng </span></h3>
+                                
+                            </div>
+                        </li>
+                        <li>
+                            <div class="w3l_banner_nav_right_banner2">
+                                <h3>Năng lượng <i>cho</i> cuộc sống</h3>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+            <!-- flexSlider -->
+            <link rel="stylesheet" href="/Asset/client/css/flexslider.css" type="text/css" media="screen" property="" />
+            <script defer src="/Asset/client/js/jquery.flexslider.js"></script>
+            <script type="text/javascript">
+                $(window).load(function () {
+                    $('.flexslider').flexslider({
+                        animation: "slide",
+                        start: function (slider) {
+                            $('body').removeClass('loading');
+                        }
+                    });
+                });
+            </script>
+            <!-- //flexSlider -->
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<!-- banner -->
+
+<div class="fresh-vegetables">
+    <div class="container">
+        <div class="w3l_fresh_vegetables_grids">
+            <div class="col-md-3 w3l_fresh_vegetables_grid w3l_fresh_vegetables_grid_left">
+                <div class="w3l_fresh_vegetables_grid2">
+                    <div class="panel panel-default">
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            
+                                <ul>
+                                    <li><i class="fa fa-check" aria-hidden="true"></i><a href="">BMI</a></li>
+                                    <li><i class="fa fa-check" aria-hidden="true"></i><a href="">TDEE</a></li>
+                                    <li><i class="fa fa-check" aria-hidden="true"></i><a href="">BMR</a></li>
+                                </ul>
+                            
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 w3l_fresh_vegetables_grid_right">
+                <div class="col-md-4 w3l_fresh_vegetables_grid">
+                    <div class="w3l_fresh_vegetables_grid1">
+                        <img src="/Asset/client/images/giamcan.jpg" alt=" " class="img-responsive" />
+                        <div class="wthree_banner_btm_pos1">
+                            <h3>Giảm Cân</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 w3l_fresh_vegetables_grid">
+                    <div class="w3l_fresh_vegetables_grid1">
+                        <img src="/Asset/client/images/tangcan.jpg" alt=" " class="img-responsive" />
+                        <div class="wthree_banner_btm_pos1">
+                            <h3>Tăng Cân</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 w3l_fresh_vegetables_grid">
+                    <div class="w3l_fresh_vegetables_grid1">
+                        <img src="/Asset/client/images/Suckhoe.jpg" alt=" " class="img-responsive" />
+                        <div class="wthree_banner_btm_pos1">
+                            <h3>Sức khỏe</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 w3l_fresh_vegetables_grid">
+                    <div class="w3l_fresh_vegetables_grid1">
+                        <img src="/Asset/client/images/Ankien.jpg" alt=" " class="img-responsive" />
+                        <div class="wthree_banner_btm_pos1">
+                            <h3>Ăn kiêng</h3>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="clearfix"> </div>
+
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+</div>
+
+<!-- top-brands -->
+<!-- //top-brands -->
+<!-- fresh-vegetables -->
+<div class="fresh-vegetables">
+    <div class="container">
+        <div class="w3l_fresh_vegetables_grids">
+            <div class="col-md-3 w3l_fresh_vegetables_grid w3l_fresh_vegetables_grid_left">
+                <div class="w3l_fresh_vegetables_grid2">
+                    <div class="panel panel-default">
+
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                @using (Html.BeginForm("TDEE", "Home", FormMethod.Post))
+                                 {
+                                    @Html.AntiForgeryToken()
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="2">Năng lượng tiêu thụ hằng ngày</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Tuổi</td>
+                                                <td>
+                                                    <input type="text" name="age" min="1" max="999" id="age" class="form-control" placeholder="Số tuổi">
+                                                    <span id="age_error_message" class="error-form btn-sm text-danger"></span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Giới tính</td>
+                                                <td>
+                                                    <select class="form-control" name="gender">
+                                                        <option>Nam</option>
+                                                        <option>Nữ</option>
+                                                    </select>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>Cân nặng</td>
+                                                <td>
+                                                    <input type="text" class="form-control" min="1" max="999" id="weight" name="weight" placeholder="Cân nặng (kg)">
+                                                    <span id="weight_error_message" class="error-form btn-sm text-danger"></span>
+                                                
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Chiều cao</td>
+                                                <td>
+                                                    <input type="text" class="form-control" min="1" max="999" id="height" name="height" placeholder="Chiều cao (cm)">
+                                                    <span id="height_error_message" class="error-form btn-sm text-danger"></span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Hoạt động</td>
+                                                <td>
+                                                    <select class="form-control" name="activity">
+                                                        <option>Hoạt động nhẹ</option>
+                                                        <option>Hoạt động vừa ( 1 đến 3 lần/tuần )</option>
+                                                        <option>Hoạt động trung bình ( 3 đến 5 lần/tuần )</option>
+                                                        <option>Hoạt động nặng ( 6 đến 7 lần/tuần )</option>
+                                                        <option>Vận động viên</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"><button type="submit" id="calculate" class="btn btn-warning">Tính toán</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                 }
+                                
+                            </div>
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                </div>
+            </div>
+            @{Html.RenderAction("Index", "ThucphamRan");}           
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $("#age_error_message").hide();
+        $("#weight_error_message").hide();
+        $("#height_error_message").hide();
+
+        var error_age = false;
+        var error_weight = false;
+        var error_height = false;
+
+        $("#age").focusout(function () {
+            check_age();
+
+        });
+        $("#weight").focusout(function () {
+            check_weight();
+
+        });
+        $("#height").focusout(function () {
+            check_height();
+
+        });
+
+        function check_age() {
+            var pattern = /^\d+$/;
+            var age = $('#age').val();
+            if (pattern.test(age) && age !== '') {
+                $("#age_error_message").hide();
+                $("#age").css('border-bottom', '2px solid #34F458');
+
+            }
+            else {
+                if (age == '') {
+                    $("#age_error_message").html("Please enter your age");
+                    $("#age_error_message").show();
+                    $("#age").css('border-bottom', '2px solid #F90A0A');
+                    error_age = true;
+                }
+                else {
+                    $("#age_error_message").html("Please insert number only");
+                    $("#age_error_message").show();
+                    $("#age").css('border-bottom', '2px solid #F90A0A');
+                    error_age = true;
+                }
+            }
+        }
+
+        function check_weight() {
+            var pattern = /^[0-9]*\.?[0-9]*$/;
+            var weight = $("#weight").val();
+            if (pattern.test(weight) && weight !== '') {
+                $("#weight_error_message").hide();
+                $("#weight").css('border-bottom', '2px solid #34F458');
+
+            }
+            else if (weight == '') {
+                $("#weight_error_message").html("Please enter your weight");
+                $("#weight_error_message").show();
+                $("#weight").css('border-bottom', '2px solid #F90A0A');
+                error_weight = true;
+            }
+            else {
+                $("#weight_error_message").html("Should contain number only");
+                $("#weight_error_message").show();
+                $("#weight").css('border-bottom', '2px solid #F90A0A');
+                error_weight = true;
+            }
+        }
+
+        function check_height() {
+            var pattern = /^\d+$/;
+            var height = $("#height").val();
+            if (pattern.test(height) && height !== '') {
+                $("#height_error_message").hide();
+                $("#height").css('border-bottom', '2px solid #34F458');
+
+            }
+            else if (height == '') {
+                $("#height_error_message").html("Please enter your weight");
+                $("#height_error_message").show();
+                $("#height").css('border-bottom', '2px solid #F90A0A');
+                error_height = true;
+            }
+            else {
+                $("#height_error_message").html("Should contain number only");
+                $("#height_error_message").show();
+                $("#height").css('border-bottom', '2px solid #F90A0A');
+                error_height = true;
+            }
+        }
+
+        $("#calculate").click(function () {
+
+            error_age = false;
+            error_weight = false;
+            error_height = false;
+
+
+
+            check_age();
+            check_weight();
+            check_height();
+
+            if (error_age == false && error_weight == false && error_height == false) {
+                alert("Successful calculate")
+
+                return true;
+            }
+            else {
+                alert("Please fill your info correctly")
+                return false;
+            }
+
+        });
+
+
+
+
+
+
+
+
+    });
+
+</script>
+<script>
+    $(document).ready(function () {
+        
+        $('#age').keyup(function () {
+            var pattern = /^\d+$/;
+            if (pattern.test($(this).val()) && $(this).val() != '') {
+
+                $("#age_error_message").hide();
+                $("#age").css('border-bottom', '2px solid #34F458');
+
+            }
+            else if ($(this).val() =='') {
+                $("#age_error_message").html("Please enter your age");
+                $("#age_error_message").show();
+                $("#txtAge").css('border-bottom', '2px solid #F90A0A');
+
+
+            }
+            else {
+                $("#age_error_message").html("Should contain number only");
+                $("#age_error_message").show();
+                $("#age").css('border-bottom', '2px solid #F90A0A');
+
+            }
+
+        });
+        $('#weight').keyup(function () {
+            var pattern = /^[0-9]*\.?[0-9]*$/;
+            if (pattern.test($(this).val()) && $(this).val() != '') {
+
+                $("#weight_error_message").hide();
+                $("#weight").css('border-bottom', '2px solid #34F458');
+
+            }
+            else if ($(this).val() == '') {
+                $("#weight_error_message").html("Please enter your weight");
+                $("#weight_error_message").show();
+                $("#weight").css('border-bottom', '2px solid #F90A0A');
+
+
+            }
+
+            else {
+                $("#weight_error_message").html("Should contain number only");
+                $("#weight_error_message").show();
+                $("#weight").css('border-bottom', '2px solid #F90A0A');
+
+            }
+
+        });
+        $('#height').keyup(function () {
+            var pattern = /^\d+$/;
+            if (pattern.test($(this).val()) && $(this).val() != '') {
+
+                $("#height_error_message").hide();
+                $("#height").css('border-bottom', '2px solid #34F458');
+
+            }
+            else if ($(this).val() == '') {
+                $("#height_error_message").html("Please enter your height");
+                $("#height_error_message").show();
+                $("#height").css('border-bottom', '2px solid #F90A0A');
+
+
+            }
+
+            else {
+                $("#height_error_message").html("Should contain number only");
+                $("#height_error_message").show();
+                $("#height").css('border-bottom', '2px solid #F90A0A');
+
+            }
+
+        });
+
+
+
+
+    });
+</script>
+<script>
+    $(function () {
+        $("#age").change(function () {
+            var max = parseInt($(this).attr('max'));
+            var min = parseInt($(this).attr('min'));
+            if ($(this).val() > max) {
+                $(this).val(max);
+            }
+            else if ($(this).val() < min) {
+                $(this).val(min);
+            }
+        });
+        $("#weight").change(function () {
+            var max = parseInt($(this).attr('max'));
+            var min = parseInt($(this).attr('min'));
+            if ($(this).val() > max) {
+                $(this).val(max);
+            }
+            else if ($(this).val() < min) {
+                $(this).val(min);
+            }
+        });
+        $("#height").change(function () {
+            var max = parseInt($(this).attr('max'));
+            var min = parseInt($(this).attr('min'));
+            if ($(this).val() > max) {
+                $(this).val(max);
+            }
+            else if ($(this).val() < min) {
+                $(this).val(min);
+            }
+        });
+    });
+</script>
+
+
+
+<!-- //fresh-vegetables -->
+<!-- newsletter -->
+<!-- //newsletter -->
+<link href="/Asset/client/cssfix/fixstyle.css" rel="stylesheet" />
+<link href="~/Asset/client/cssfix/fixfontRandom.css" rel="stylesheet" />

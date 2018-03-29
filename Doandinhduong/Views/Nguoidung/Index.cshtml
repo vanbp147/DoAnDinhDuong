@@ -1,0 +1,742 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Model.ViewModel.NguoidungViewModel
+@{
+    var session = (Doandinhduong.Areas.Admin.Common.UserLoginSS)Session[Doandinhduong.Common.CommonConstants.USER_SESSION];
+   
+}
+<div class="fresh-vegetables">
+    <div class="container">
+        <div class="w3l_fresh_vegetables_grids">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3> Thông tin cá nhân</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-md-6">
+                            <table>
+                                <tr>
+                                    <td colspan="2">
+                                        <h3>Thông số của bạn</h3>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Tuổi</td>
+                                    <td>
+                                        <input type="text" name="age" id="txtAge" min="1" max=" 999" class="form-control" placeholder="Tuổi" value="@Html.DisplayFor(model => model.Tuoi)">
+                                        <span class="error-form btn-sm text-danger" id="age_error_message"></span>
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Giới tính</td>
+                                    <td>
+                                        
+                                            
+                                        @Html.DropDownListFor(model => model.Gioitinh, null, new { HtmlAtrributes = new { @class = "form-control", @placehoder = " ", @autofocus = "autofocus" }, id = "txtGender"})
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Cân nặng</td>
+                                    <td>
+                                        <input name="weight" id="txtWeight" type="text" min="1" max="999" class="form-control" placeholder="Cân nặng (Kg)" value="@Html.DisplayFor(model => model.Cannang)" />
+                                        <span class="error-form btn-sm text-danger" id="weight_error_message"></span>
+                                        
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>Chiều cao</td>
+                                    <td>
+                                        <input name="height" id="txtHeight" type="text" min="1" max=" 999"  class="form-control" placeholder="Chiều cao (Cm)" value="@Html.DisplayFor(model => model.Chieucao)" />
+                                        <span class="error-form btn-sm text-danger" id="height_error_message"></span>
+                                        
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>Hoạt động</td>
+                                    <td>
+                                       
+                                        @Html.DropDownListFor(model => model.Loai, null, new { HtmlAtrributes = new { @class = "form-control", @placehoder = " ", @autofocus = "autofocus" }, id = "txtActivity" })
+                                       
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="col-md-2 text-center">
+                                        <input id="idnguoidung" value="@session.UserName" type="hidden" />   
+                                                                             
+                                        <a href="#" class="btn-capnhat" data-id="@Html.DisplayFor(model => model.ID_Nguoidung)">Cập nhật thông tin</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="tablebackgroud">
+                                <tr>
+                                    <td rowspan="5" class="col-md-4 text-center">
+                                        <div >
+                                          
+                                            <h3 style="padding-bottom:35px;"> Lượng calorie cần duy trì của bạn </h3>
+                                            <div style="padding: 20px 15px;">
+
+                                                <h3 id="txtCalorieDay">
+
+                                                </h3>
+                                                <p>calories mỗi ngày </p>
+                                            </div>
+                                            <div style="padding: 20px 15px;">
+                                                <h3 id="txtCalorieWeek"></h3>
+                                                <p>calories hằng tuần</p>
+                                            </div>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="clearfix"></div><!--Phân1-->                       
+
+                        <div class="col-md-6">
+                            <table class=" table table-hover">
+                                <tr>
+                                    <td colspan="2">
+                                        <h3>BMI Score: <span id="txtBmiScore"></span></h3>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        BMI của bạn là <span id="txtBmiScore1"></span>, có nghĩa là bạn được phân loại là  <span id="txtBmi"></span>
+                                         
+                                    </td>
+                                 </tr>
+
+                            </table>
+                        </div> 
+
+                        <div class="col-md-6">
+                            <!--BMI Score-->
+                            <table class=" table table-hover">
+                                
+                                <tr>
+                                    <td id="18.5">18,5 trở xuống</td>
+                                    <td id="txtthieucan">Thiếu cân</td>
+                                </tr>
+                                <tr>
+                                    <td id="24">18.5 – 24.99</td>
+                                    <td id ="txtbinhthuong">Trọng lượng bình thường</td>
+                                </tr>
+                                <tr>
+                                    <td id="25">25 – 29.99	</td>
+                                    <td id="txtthuacan">Thừa cân</td>
+                                </tr>
+                                <tr>
+                                    <td id="30">30+</td>
+                                    <td id="txtmap">Mập</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="clearfix"></div><!----Phần 3-->
+
+                        <div class="col-md-12">
+                            <!--BMI Score-->
+                            <table class="table">
+                                <tr>
+                                    <td colspan="2">
+                                        <h3>Macronutrients</h3>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <ul class="nav nav-tabs" role="tablist">
+                                            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Giữ cân</a></li>
+                                            <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Giảm cân</a></li>
+                                            <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Tăng cân</a></li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div role="tabpanel" class="tab-pane active" id="home">
+                                               
+                                                <div class="col-lg-6">
+                                                    <!-- Example Bar Chart Card-->
+                                                    <div class="card mb-3">
+                                                        <div class="card-body">
+                                                            <canvas id="myBarChart1" width="100" height="50"></canvas>
+                                                        </div>                                                        
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    Những giá trị dinh dưỡng này phản ánh lượng calo bảo trì của bạn là <h4 id="txtCalorieDay1"></h4> calo mỗi ngày.
+                                                </div>
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane" id="profile">
+                                            
+                                            <div class="col-lg-6">
+                                                    <!-- Example Bar Chart Card-->
+                                                    <div class="card mb-3">
+                                                        <div class="card-body">
+                                                            <canvas id="myBarChart2" width="100" height="50"></canvas>
+                                                        </div>                                                        
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    Những giá trị dinh dưỡng vĩ mô này phản ánh lượng calo cắt giảm của bạn là <h4 id="txtCalorieDaygiamcan"></h4> calo mỗi ngày, là mức thiếu hụt 500 calo mỗi ngày.
+                                                    
+                                                </div>
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane" id="messages">
+                                                
+                                                <div class="col-lg-6">
+                                                    <!-- Example Bar Chart Card-->
+                                                    <div class="card mb-3">
+                                                        <div class="card-body">
+                                                            <canvas id="myBarChart3" width="100" height="50"></canvas>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                   
+                                                    Những giá trị dinh dưỡng này phản ánh lượng calo bảo trì của bạn là <h4 id="txtCalorieDaytangcan"></h4> calo mỗi ngày.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                            </table>
+                        </div>
+                        <div class="clearfix"></div><!----Phần 3-->
+                        <a href="/theo-doi-co-the/@session.UserName">Theo dõi cơ thể</a>
+
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+</div>
+<link href="~/Asset/client/cssfix/fixstyle.css" rel="stylesheet" />
+<link href="~/Asset/client/cssfix/fixcssgianhchoban.css" rel="stylesheet" />
+<script language="javascript">
+
+            window.onload = function()
+            {
+                var bmr;
+                var calories
+                var id = $('#idnguoidung').val();                
+                var tuoi = parseInt($('#txtAge').val());
+                var gioitinh = $('#txtGender').val();
+                var cannang = parseInt($('#txtWeight').val());
+                var chieucao = parseInt($('#txtHeight').val());
+                var kieunguoi = $('#txtActivity').val();
+                if (gioitinh == 'Nam'){
+                    bmr = (13.397 * cannang) + (4.799 * chieucao) - (5.677 * tuoi) + 88.362;
+                }else{
+                    bmr = (9.247 * cannang) + (3.098 * chieucao) - (4.330 * tuoi) + 447.593;
+                }
+                if (kieunguoi == 'Hoạt động nhẹ') {
+                    calories = bmr * 1.2;
+                }
+                else if (kieunguoi == 'Hoạt động vừa')
+                {
+                    calories = bmr * 1.375;
+                }
+                else if (kieunguoi == 'Hoạt động trung bình')
+                {
+                    calories = bmr * 1.55;
+                }
+                else if (kieunguoi == 'Hoạt động nặng')
+                {
+                    calories = bmr * 1.725;
+                }
+                else if (kieunguoi == 'Vận động viên')
+                {
+                    calories = bmr * 1.9;
+                }
+                calories = Math.round(calories);
+                var CalorieWeek = calories * 7;
+                var chieucm = chieucao/100;
+                
+                var bmi = cannang / (chieucm*chieucm);
+                
+                bmi = Math.round(bmi, 2);
+                $.ajax({
+                    url: "/Nguoidung/Changecalo",
+                    data: {
+                        username: id,
+                        calories: calories
+                    },
+                    dataType: "json",
+                    type: "POST",
+                    success: function (response) {
+
+                        if (response.status == true) {
+
+                            $('#txtCalorieDay').text(calories);
+                            $('#txtCalorieDay1').text(calories);
+                            $('#txtCalorieWeek').text(CalorieWeek);
+                            $('#txtBmiScore').text(bmi);
+                            $('#txtBmiScore1').text(bmi);
+                            if (bmi <= 18.5) {
+                                $('#txtBmi').text('thiếu cân');
+                                $('#18.5').css('font-weight', 'bold');
+                                $('#txtthieucan').css('font-weight', 'bold');                                    
+                            } else if (bmi > 18.5 && bmi <= 24.99) {
+                                $('#txtBmi').text('bình thường');
+                                $('#24').text('18.5 – 24.99').css('font-weight', 'bold');
+                                $('#txtbinhthuong').css('font-weight', 'bold');
+                            } else if (bmi >= 25 && bmi <= 29.99) {
+                                $('#txtBmi').text('thừa cân');
+                                $('#25').css('font-weight', 'bold');
+                                $('#txtthuacan').css('font-weight', 'bold');
+                            } else if (bmi >= 30) {
+                                $('#txtBmi').text('mập');
+                                $('#30').text('30+').css('font-weight', 'bold');
+                                $('#txtmap').text('	Mập').css('font-weight', 'bold');
+                            }
+                            
+
+                        }
+
+                    }
+                });
+
+                /*giữ cân*/
+                var ptPro = calories * 0.3;
+                var prFat = calories * 0.35;
+                var ptCarb = calories * 0.35;
+                var chisoPro = ptPro / 4;
+                var chisoCarb = ptCarb / 4;
+                var chisoFat = prFat / 9;
+                chisoPro = Math.round(chisoPro);
+                chisoCarb = Math.round(chisoCarb);
+                chisoFat = Math.round(chisoFat);
+
+                var ctx = document.getElementById("myBarChart1");
+                var myLineChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ["Protein", "Fats", "Carbs"],
+                        datasets: [{
+                            label: "Revenue",
+                            backgroundColor: [
+                                    'rgba(183, 20, 39, 1)',
+                                    'rgba(255, 230, 88, 1)',
+                                    'rgba(109, 189, 214, 1)'
+                            ],
+                            borderColor: [
+                                'rgba(255,99,132,1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)'
+                            ],
+                            data: [chisoPro, chisoFat, chisoCarb],
+                        }],
+                    },
+                    options: {
+                        scales: {
+                            xAxes: [{
+                                time: {
+                                    unit: 'month'
+                                },
+                                gridLines: {
+                                    display: false
+                                },
+                                ticks: {
+                                    maxTicksLimit: 6
+                                }
+                            }],
+                            yAxes: [{
+                                ticks: {
+                                    min: 0,
+                                    max:500,
+                                    maxTicksLimit: 5
+                                },
+                                gridLines: {
+                                    display: true
+                                }
+                            }],
+                        },
+                        legend: {
+                            display: false
+                        }
+                    }
+                });
+               
+                /*giảm cân*/
+                var calories2 = calories - 500;
+                $('#txtCalorieDaygiamcan').text(calories2);
+                var ptPro2 = calories2 * 0.3;
+                var prFat2 = calories2 * 0.35;
+                var ptCarb2 = calories2 * 0.35;
+                var chisoPro2 = ptPro2 / 4;
+                var chisoCarb2 = ptCarb2 / 4;
+                var chisoFat2 = prFat2 / 9;
+                chisoPro2 = Math.round(chisoPro2);
+                chisoCarb2 = Math.round(chisoCarb2);
+                chisoFat2 = Math.round(chisoFat2);
+
+                var ctx = document.getElementById("myBarChart2");
+                var myLineChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ["Protein", "Fats", "Carbs"],
+                        datasets: [{
+                            label: "Revenue",
+                            backgroundColor: [
+                                    'rgba(183, 20, 39, 1)',
+                                    'rgba(255, 230, 88, 1)',
+                                    'rgba(109, 189, 214, 1)'
+                            ],
+                            borderColor: [
+                                'rgba(255,99,132,1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)'
+                            ],
+                            data: [chisoPro2, chisoFat2, chisoCarb2],
+                        }],
+                    },
+                    options: {
+                        scales: {
+                            xAxes: [{
+                                time: {
+                                    unit: 'month'
+                                },
+                                gridLines: {
+                                    display: false
+                                },
+                                ticks: {
+                                    maxTicksLimit: 6
+                                }
+                            }],
+                            yAxes: [{
+                                ticks: {
+                                    min: 0,
+                                    max: 500,
+                                    maxTicksLimit: 5
+                                },
+                                gridLines: {
+                                    display: true
+                                }
+                            }],
+                        },
+                        legend: {
+                            display: false
+                        }
+                    }
+                });
+                /*tăng cân*/
+                var calories3 = calories + 500;
+                $('#txtCalorieDaytangcan').text(calories3);
+                var ptPro3 = calories3 * 0.3;
+                var prFat3 = calories3 * 0.35;
+                var ptCarb3 = calories3 * 0.35;
+                var chisoPro3 = ptPro3 / 4;
+                var chisoCarb3 = ptCarb3 / 4;
+                var chisoFat3 = prFat3 / 9;
+                chisoPro3 = Math.round(chisoPro3);
+                chisoCarb3 = Math.round(chisoCarb3);
+                chisoFat3 = Math.round(chisoFat3);
+
+                var ctx = document.getElementById("myBarChart3");
+                var myLineChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ["Protein", "Fats", "Carbs"],
+                        datasets: [{
+                            label: "Revenue",
+                            backgroundColor: [
+                                    'rgba(183, 20, 39, 1)',
+                                    'rgba(255, 230, 88, 1)',
+                                    'rgba(109, 189, 214, 1)'
+                            ],
+                            borderColor: [
+                                'rgba(255,99,132,1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)'
+                            ],
+                            data: [chisoPro3, chisoFat3, chisoCarb3],
+                        }],
+                    },
+                    options: {
+                        scales: {
+                            xAxes: [{
+                                time: {
+                                    unit: 'month'
+                                },
+                                gridLines: {
+                                    display: false
+                                },
+                                ticks: {
+                                    maxTicksLimit: 6
+                                }
+                            }],
+                            yAxes: [{
+                                ticks: {
+                                    min: 0,
+                                    max: 500,
+                                    maxTicksLimit: 5
+                                },
+                                gridLines: {
+                                    display: true
+                                }
+                            }],
+                        },
+                        legend: {
+                            display: false
+                        }
+                    }
+                });
+            };
+
+          	
+
+</script>
+
+<script>
+    $(function () {
+        $("#txtAge").change(function () {
+            var max = parseInt($(this).attr('max'));
+            var min = parseInt($(this).attr('min'));
+            if ($(this).val() > max) {
+                $(this).val(max);
+            }
+            else if ($(this).val() < min) {
+                $(this).val(min);
+            }
+        });
+        $("#txtWeight").change(function () {
+            var max = parseInt($(this).attr('max'));
+            var min = parseInt($(this).attr('min'));
+            if ($(this).val() > max) {
+                $(this).val(max);
+            }
+            else if ($(this).val() < min) {
+                $(this).val(min);
+            }
+        });
+        $("#txtHeight").change(function () {
+            var max = parseInt($(this).attr('max'));
+            var min = parseInt($(this).attr('min'));
+            if ($(this).val() > max) {
+                $(this).val(max);
+            }
+            else if ($(this).val() < min) {
+                $(this).val(min);
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        
+        $('#txtAge').keyup(function () {
+            var pattern = /^\d+$/;
+            if (pattern.test($(this).val()) && $(this).val() != '') {
+
+                $("#age_error_message").hide();
+                $("#txtAge").css('border-bottom', '2px solid #34F458');
+
+            }
+            else if ($(this).val() == '') {
+                $("#age_error_message").html("Please enter your age");
+                $("#age_error_message").show();
+                $("#txtAge").css('border-bottom', '2px solid #F90A0A');
+
+
+            }
+            else {
+                $("#age_error_message").html("Should contain number only");
+                $("#age_error_message").show();
+                $("#txtAge").css('border-bottom', '2px solid #F90A0A');
+
+            }
+
+        });
+        $('#txtWeight').keyup(function () {
+            var pattern = /^[0-9]*\.?[0-9]*$/;
+            if (pattern.test($(this).val()) && $(this).val() != '') {
+
+                $("#weight_error_message").hide();
+                $("#txtWeight").css('border-bottom', '2px solid #34F458');
+
+            }
+            else if ($(this).val() == '') {
+                $("#weight_error_message").html("Please enter your weight");
+                $("#weight_error_message").show();
+                $("#txtWeight").css('border-bottom', '2px solid #F90A0A');
+
+
+            }
+
+            else {
+                $("#weight_error_message").html("Should contain number only");
+                $("#weight_error_message").show();
+                $("#txtWeight").css('border-bottom', '2px solid #F90A0A');
+
+            }
+
+        });
+        $('#txtHeight').keyup(function () {
+            var pattern = /^\d+$/;
+            if (pattern.test($(this).val()) && $(this).val() != '') {
+
+                $("#height_error_message").hide();
+                $("#txtHeight").css('border-bottom', '2px solid #34F458');
+
+            }
+            else if ($(this).val() == '') {
+                $("#height_error_message").html("Please enter your height");
+                $("#height_error_message").show();
+                $("#txtHeight").css('border-bottom', '2px solid #F90A0A');
+
+
+            }
+
+            else {
+                $("#height_error_message").html("Should contain number only");
+                $("#height_error_message").show();
+                $("#txtHeight").css('border-bottom', '2px solid #F90A0A');
+
+            }
+
+        });
+
+
+
+
+    });
+</script>
+
+
+<script type="text/javascript">
+    $(function () {
+        $("#age_error_message").hide();
+        $("#weight_error_message").hide();
+        $("#height_error_message").hide();
+
+        var error_age = false;
+        var error_weight = false;
+        var error_height = false;
+
+        $("#txtAge").focusout(function () {
+            check_age();
+
+        });
+        $("#txtWeight").focusout(function () {
+            check_weight();
+
+        });
+        $("#txtHeight").focusout(function () {
+            check_height();
+
+        });
+
+        function check_age() {
+            var pattern = /^\d+$/;
+            var age = $('#txtAge').val();
+            if (pattern.test(age) && age !== '') {
+                $("#age_error_message").hide();
+                $("#txtAge").css('border-bottom', '2px solid #34F458');
+
+            }
+            else {
+                if (age == '') {
+                    $("#age_error_message").html("Please enter your age");
+                    $("#age_error_message").show();
+                    $("#txtAge").css('border-bottom', '2px solid #F90A0A');
+                    error_age = true;
+                }
+                else {
+                    $("#age_error_message").html("Please insert number only");
+                    $("#age_error_message").show();
+                    $("#txtAge").css('border-bottom', '2px solid #F90A0A');
+                    error_age = true;
+                }
+            }
+        }
+
+        function check_weight() {
+            var pattern = /^[0-9]*\.?[0-9]*$/;
+            var weight = $("#txtWeight").val();
+            if (pattern.test(weight) && weight !== '') {
+                $("#weight_error_message").hide();
+                $("#txtWeight").css('border-bottom', '2px solid #34F458');
+
+            }
+            else if (weight == '') {
+                $("#weight_error_message").html("Please enter your weight");
+                $("#weight_error_message").show();
+                $("#txtWeight").css('border-bottom', '2px solid #F90A0A');
+                error_weight = true;
+            }
+            else {
+                $("#weight_error_message").html("Should contain number only");
+                $("#weight_error_message").show();
+                $("#txtWeight").css('border-bottom', '2px solid #F90A0A');
+                error_weight = true;
+            }
+        }
+
+        function check_height() {
+            var pattern = /^\d+$/;
+            var height = $("#txtHeight").val();
+            if (pattern.test(height) && height !== '') {
+                $("#height_error_message").hide();
+                $("#txtHeight").css('border-bottom', '2px solid #34F458');
+
+            }
+            else if (height == '') {
+                $("#height_error_message").html("Please enter your weight");
+                $("#height_error_message").show();
+                $("#txtHeight").css('border-bottom', '2px solid #F90A0A');
+                error_height = true;
+            }
+            else {
+                $("#height_error_message").html("Should contain number only");
+                $("#height_error_message").show();
+                $("#txtHeight").css('border-bottom', '2px solid #F90A0A');
+                error_height = true;
+            }
+        }
+
+        $(".btn-capnhat").click(function () {
+
+            error_age = false;
+            error_weight = false;
+            error_height = false;
+
+
+
+            check_age();
+            check_weight();
+            check_height();
+
+            if (error_age == false && error_weight == false && error_height == false) {
+                
+
+                return true;
+            }
+            else {
+                alert("Please fill your info correctly")
+                return false;
+            }
+
+        });
+
+
+
+
+
+
+
+
+    });
+
+</script>

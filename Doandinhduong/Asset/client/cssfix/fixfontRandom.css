@@ -1,0 +1,10 @@
+﻿p {
+    
+    color: black;
+}
+@media (min-width: 992px){
+    .col-md-5 {
+    width: 31.66666667%;
+  
+}
+}

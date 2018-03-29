@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="fresh-vegetables">
+    <div class="container">
+        <div class="w3l_fresh_vegetables_grids">
+            <div class="mail">
+                <h3>Mail Us</h3>
+                <div class="agileinfo_mail_grids">
+                    <div class="col-md-4 agileinfo_mail_grid_left">
+                        <ul>
+                            <li><i class="fa fa-home" aria-hidden="true"></i></li>
+                            <li>Địa chỉ<span>Linh trung, Thủ đức</span></li>
+                        </ul>
+                        <ul>
+                            <li><i class="fa fa-envelope" aria-hidden="true"></i></li>
+                            <li>email<span><a href="mailto:info@example.com">tranthanhvan236@gmail.com</a></span></li>
+                        </ul>
+                        <ul>
+                            <li><i class="fa fa-phone" aria-hidden="true"></i></li>
+                            <li>Điện thoại: <span>(+84)1642973279</span></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-8 agileinfo_mail_grid_right">
+                        @using (Html.BeginForm("Guimail", "Lienhe", FormMethod.Post))
+                        {
+                            <div class="col-md-6 wthree_contact_left_grid">
+                                <input type="text" name="Name" value="Name*" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Tên*';}" required="">
+                                <input type="email" name="Email" value="Email*" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Email*';}" required="">
+                            </div>
+                            <div class="col-md-6 wthree_contact_left_grid">
+                                <input type="text" name="mobile" value="mobile*" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Điện thoại*';}" required="">
+                                <input type="text" name="address" value="address*" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Địa chỉ*';}" required="">                               
+                            </div>
+                            <div class="clearfix"> </div>
+                            <textarea name="Message" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Lời nhắn...';}" required="">Lời nhắn...</textarea>
+                           
+                            <button type="submit" class="btn">Gửi</button>
+                            <input type="reset" value="Hủy">
+                        }
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<link href="~/Asset/client/cssfix/fixstyle.css" rel="stylesheet" />

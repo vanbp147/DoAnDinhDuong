@@ -1,0 +1,100 @@
+﻿@model Doandinhduong.Models.RegisterModel
+@using BotDetect.Web.UI;
+@using BotDetect.Web.Mvc;
+<link href="@BotDetect.Web.CaptchaUrls.Absolute.LayoutStyleSheetUrl"
+      rel="stylesheet" type="text/css" />
+@{ BotDetect.Web.Mvc.MvcCaptcha registerCapcha = new BotDetect.Web.Mvc.MvcCaptcha("registerCapcha"); }
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="container">
+    <div class="w3_login">
+        @if (ViewBag.Success != null)
+        {
+            <div class="alert alert-success">@ViewBag.Success</div>
+        }
+
+        <h3>Đăng kí</h3>
+        <div class="w3_login_module">
+            <div class="module form-module">
+                <div class="toggle">
+
+                </div>
+
+
+                <div class="form">
+                    <h2>Tạo tài khoản</h2>
+                    @using (Html.BeginForm("Register", "LoginRegister", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="form-group">
+                            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Taikhoan)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Taikhoan)
+
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Matkhau)
+                        </div>
+                        <div class="editor-field">
+                            @Html.PasswordFor(model => model.Matkhau)
+
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Matkhauxacnhan)
+                        </div>
+                        <div class="editor-field">
+                            @Html.PasswordFor(model => model.Matkhauxacnhan)
+
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Email)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Email)
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                @Html.Captcha(registerCapcha)
+                                @Html.TextBox("CaptchaCode")
+                            </div>
+                        </div>
+                        <p>
+                            <input type="submit" value="Tạo mới" />
+                        </p>
+                    }
+                </div>
+
+
+            </div>
+        </div>
+        <script>
+				$('.toggle').click(function(){
+				  // Switches the Icon
+				  $(this).children('i').toggleClass('fa-pencil');
+				  // Switches the forms
+				  $('.form').animate({
+					height: "toggle",
+					'padding-top': 'toggle',
+					'padding-bottom': 'toggle',
+					opacity: "toggle"
+				  }, "slow");
+				});
+        </script>
+        <link href="/Asset/client/cssfix/fixstyle.css" rel="stylesheet" />
+    </div>
+</div>

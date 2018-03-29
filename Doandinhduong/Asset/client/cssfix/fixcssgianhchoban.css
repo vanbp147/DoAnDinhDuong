@@ -1,0 +1,33 @@
+﻿
+ .w3l_fresh_vegetables_grids {
+    margin: 0 0 0;
+    padding: 1em 0em 0em 0em;
+    background: #f5f5f5;
+
+}
+ 
+table, th, td {
+   border: 1px solid white;
+   padding: 10px;
+   font-size: 16px;
+}
+
+.top-brands h3, .fresh-vegetables h3, .mail h3, .testimonials h3, .w3_login h3, .w3ls_w3l_banner_nav_right_grid h3, h3.title, .faq h3, .services h3, .about h3, .team h3, .events h3 {
+   
+    color: #2c3e50;
+   
+   
+}
+.tablebackgroud {   
+    background-color: #fdf6e5;
+    
+}
+.top-brands h3:after, .fresh-vegetables h3:after, .mail h3:after, .w3_login h3:after, .testimonials h3:after, .w3ls_w3l_banner_nav_right_grid h3:after, h3.title:after, .faq h3:after, .services h3:after, .about h3:after, .team h3:after, .events h3:after {
+   
+     background: 0; 
+   
+}
+p {
+    margin: 0;
+    color: #2c3e50;
+}

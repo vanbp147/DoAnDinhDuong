@@ -1,0 +1,23 @@
+﻿@model List<Model.EF.Menu>
+<div class="logo_products">
+    <div style="background:white">
+        <div class="container">
+
+            <div class="w3ls_logo_products_left">
+                <a href="/"><img src="/Asset/client/images/logodinhduong.png" class="imglogo" /></a>
+            </div>
+            <div class="w3ls_logo_products_left1">
+                <ul class="special_items">
+                    @foreach (var item in Model)
+                    {
+                        <li><a href="@item.Link">@item.Text</a><i>/</i></li>
+                    }
+
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="clearfix"> </div>
+    </div>
+</div>

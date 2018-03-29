@@ -1,0 +1,311 @@
+﻿@model List<Model.ViewModel.TheodoiViewModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    var session = (Doandinhduong.Areas.Admin.Common.UserLoginSS)Session[Doandinhduong.Common.CommonConstants.USER_SESSION];
+    var date = DateTime.Now.ToString("yyyy-MM-dd'T'HH:mm:ss");
+}
+<div class="fresh-vegetables">
+    <div class="container">
+        
+        <div class="w3l_fresh_vegetables_grids">
+            <h3> Thông tin cá nhân</h3>
+            <div class="col-md-12">
+                <div class="col-md-6">
+                    @{Html.RenderAction("Getthongtincalo", "Nguoidung", new { username = @session.UserName });}
+                    
+                    
+                </div>
+                <div class="col-md-5">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#Candoi" aria-controls="Candoi" role="tab" data-toggle="tab">Giữ cân</a></li>
+                        <li role="presentation"><a href="#lowcarb" aria-controls="lowcarb" role="tab" data-toggle="tab">Giảm cân</a></li>
+                        <li role="presentation"><a href="#highcarb" aria-controls="highcarb" role="tab" data-toggle="tab">Tăng cân</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="Candoi">
+                            <div class="card md-3">
+                                <div class="card-header">
+                                    <i class="fa fa-pie-chart"></i> <h4><strong>Tỉ lệ thành phần các chất</strong> </h4>
+                                </div>
+                                <div class="card-body" style="padding-left: 50px;">
+                                    <canvas id="myPieChart1"></canvas>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="lowcarb">
+                            <div class="card md-3">
+                                <div class="card-header">
+                                    <i class="fa fa-pie-chart"></i> <h4><strong>Tỉ lệ thành phần các chất</strong> </h4>
+                                </div>
+                                <div class="card-body" style="padding-left: 50px;">
+                                    <canvas id="myPieChart2"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="highcarb">
+                            <div class="card md-3">
+                                <div class="card-header">
+                                    <i class="fa fa-pie-chart"></i> <h4><strong>Tỉ lệ thành phần các chất</strong> </h4>
+                                </div>
+                                <div class="card-body" style="padding-left: 50px;">
+                                    <canvas id="myPieChart3"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+            <div class="clearfix"></div>
+
+                @foreach (var item in Model)
+                {
+                   
+                    <div class="col-md-3 w3l_fresh_vegetables_grid w3l_fresh_vegetables_grid_left">
+                        <div class="w3l_fresh_vegetables_grid2">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <strong>@item.Ten_bua</strong>
+                                </div>
+                                <div class="panel-body">
+                                    <table>
+                                        <tr>
+                                            <td>Tên mục tiêu: </td>
+                                            <td>@item.TenMuctieu</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Ngày tháng:</td>
+                                            <td>@item.Ngaythang</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Protein: </td>
+                                            <td>@item.Protein_ba</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Fat: </td>
+                                            <td>@item.Fat_ba</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Carbs: </td>
+                                            <td>@item.Carb_ba</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tổng Calorie </td>
+                                            <td>@item.Total_calos</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+                <div class="clearfix"></div>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+                Thêm bữa ăn
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Thêm bữa ăn</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!--body-->
+                            <div class="form-group">
+                                <label for="exampleSelect1">Chọn số bữa</label>
+                                <select class="form-control" id="txtSobua">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                </select>
+                            </div>                           
+                            <div class="form-group row">
+                                <label for="example-datetime-local-input" class="col-2 col-form-label">Ngày</label>
+                                <div class="col-10">
+                                    <input class="form-control" type="datetime-local" value="@date" id="txtDate">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="example-number-input" class="col-2 col-form-label">Protein</label>
+                                <div class="col-10">
+                                    <input class="form-control" type="number" min="0" max="999" value="0" id="txtPro">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="example-number-input" class="col-2 col-form-label">Fat</label>
+                                <div class="col-10">
+                                    <input class="form-control" type="number" value="0" id="txtFat">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="example-number-input" class="col-2 col-form-label">Cabs</label>
+                                <div class="col-10">
+                                    <input class="form-control" type="number" value="0" id="txtCabs">
+                                </div>
+                            </div>
+                            
+                           
+                         
+                            <!--body-->
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <input id="txtusername" hidden="hidden" value="@session.UserName" type="text" />
+                            <a href="#" class="btn-capnhatbuaan" onclick="Thembua();" data-id="@session.UserName">Cập nhật bữa ăn</a> 
+                                                      
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            </div>
+           </div>
+</div>
+
+            
+
+<link href="~/Asset/client/cssfix/fixstyle.css" rel="stylesheet" />
+<link href="~/Asset/client/cssfix/fixcssTheodoi.css" rel="stylesheet" />
+
+
+<script language="javascript">
+
+            window.onload = function()
+            { 
+
+                var calories = $('#idcalories').val();
+                var CalorieWeek = calories * 7;
+                $('#txtCalorieDay').text(calories);
+                $('#txtCalorieWeek').text(CalorieWeek);
+                var ctx = document.getElementById("myPieChart1");
+                var myPieChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ["Carbs (35%)", "Proteins (30%)", "Fats (35%)"],
+                        datasets: [{
+                            data: [35, 30, 35],
+                            backgroundColor: ['#007bff', '#dc3545', '#ffc107'],
+                        }],
+                    },
+                });
+
+
+                var ctx = document.getElementById("myPieChart2");
+                var myPieChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ["Carbs (20%)", "Proteins (40%)", "Fats (40%)"],
+                        datasets: [{
+                            data: [20, 40, 40],
+                            backgroundColor: ['#007bff', '#dc3545', '#ffc107'],
+                        }],
+                    },
+                });
+
+
+
+
+                var ctx = document.getElementById("myPieChart3");
+                var myPieChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ["Carbs (50%)", "Proteins (30%)", "Fats (20%)"],
+                        datasets: [{
+                            data: [50, 30, 20],
+                            backgroundColor: ['#007bff', '#dc3545', '#ffc107'],
+                        }],
+                    },
+                });
+
+            };
+    
+
+</script>
+<script language="javascript" type="text/javascript">
+  
+    function Thembua() {
+       
+        var username = $('#txtusername').val();
+        var Sobua = $('#txtSobua').val();
+        var Date = $('#txtDate').val();
+        var Pro = $('#txtPro').val();
+        var Fat = $('#txtFat').val();
+        var Carbs = $('#txtCabs').val();
+        $.ajax({
+            url: "/Theodoi/Thembuaan",
+            data: {
+                username: username,
+                sobua: Sobua,
+                date: Date,
+                pro: Pro,
+                fat: Fat,
+                carbs: Carbs
+            },
+            dataType: "json",
+            type: "POST",
+            success: function (response) {
+
+                if (response.status == true) {
+
+                    alert('Save thành công');
+                    location.reload();
+
+                }
+
+            }
+        });
+    }
+    
+   
+    
+</script>
+
+<script>
+    $(function () {
+        $("#txtPro").change(function () {
+            var max = parseInt($(this).attr('max'));
+            var min = parseInt($(this).attr('min'));
+            if ($(this).val() > max) {
+                $(this).val(max);
+            }
+            else if ($(this).val() < min) {
+                $(this).val(min);
+            }
+        });
+        $("#txtWeight").change(function () {
+            var max = parseInt($(this).attr('max'));
+            var min = parseInt($(this).attr('min'));
+            if ($(this).val() > max) {
+                $(this).val(max);
+            }
+            else if ($(this).val() < min) {
+                $(this).val(min);
+            }
+        });
+        $("#txtHeight").change(function () {
+            var max = parseInt($(this).attr('max'));
+            var min = parseInt($(this).attr('min'));
+            if ($(this).val() > max) {
+                $(this).val(max);
+            }
+            else if ($(this).val() < min) {
+                $(this).val(min);
+            }
+        });
+    });
+</script>

@@ -1,0 +1,126 @@
+﻿.w3l_banner_nav_right { /*indexHomeClient*/
+  
+    width: 100%;
+    float: none;
+}
+.imglogo{
+   
+    height:100px;
+}
+.w3ls_logo_products_left {
+    
+    margin-right: 50px;
+}
+
+.banner_bottom, .top-brands, .w3l_banner_nav_right_banner3_btm, .testimonials, .team, .newsletter-top-serv-btm, .w3ls_w3l_banner_nav_right_grid_sub {
+    padding: 1em 0 !important;
+}
+.fresh-vegetables{
+    padding: 0 0 0em 0 !important;
+}
+.w3l_banner_nav_right_banner, .w3l_banner_nav_right_banner2,.w3l_banner_nav_right_banner1 {
+    padding-bottom: 10px;
+     margin-bottom: 0;
+}
+
+.panel-default {
+    border-color: #FFF;
+    background: #ffffff;
+}
+.panel-default > .panel-heading {
+    border-color: #FFF;
+    color: #212121;
+    background-color: #fff;
+    border-bottom: 1px solid #f5f5f5;
+}
+.w3l_fresh_vegetables_grid2 {
+    padding: 0; 
+    background: #fff;
+}
+.panel-body {
+    padding: 1em; 
+    font-size: 14px;
+    line-height: 2em;
+    color: #999;
+}
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    font-size: 0.9em;
+    color: #212121;
+    border-top: none !important;
+}
+.navbar-nav h3 {
+    text-align: center;
+    color: #212121;
+    padding-bottom: .5em;
+    position: relative;
+    font-size: 2.5em;
+}
+h1, h2, h3, h4, h5, h6, a {
+    font-family: 'arialt', sans-serif !important;
+    margin: 0;
+    color: black;
+}
+ h4 {
+  color:black;
+}
+.wthree_banner_bottom_left {
+    width: 25%;
+    padding-left: 10px;
+    padding-right: 0;
+}
+.img-responsive{
+    width: 218px;
+    height: 280px;
+    border-radius: 5px;
+}
+@media (min-width: 992px) {
+    .col-md-4 {
+        width: 25%;
+    }
+  
+.col-md-5 {
+    width: 31.66666667%;
+    
+
+}
+}
+
+@media (max-width: 1440px) {
+    .w3l_header_right {
+        padding-left: 27em;
+    }
+}
+.w3l_fresh_vegetables_grids {
+    margin: 0 0 0;
+    padding: 1em 0em 1em 1em;
+    background: #f5f5f5;
+}
+.wthree_banner_btm_pos1 {
+    position: absolute;
+    top: 10%;
+    left: 8%;
+    
+}
+.wthree_banner_btm_pos1 h3 {
+    text-transform: uppercase;
+    color: #ffffff;
+    font-size: 2em;
+}
+/*indexHomeClient*/
+
+/*Dangki- dang nhap*/
+.form-module .toggle {
+   
+     width: 0; 
+     height: 0; 
+    
+}
+
+/*Dangki- dang nhap*/
+.modal-body {
+    position: relative;
+    padding: 80px;
+}
+.mail{
+    background: white;   
+}

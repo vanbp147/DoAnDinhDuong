@@ -1,0 +1,49 @@
+﻿
+@media (min-width: 992px) {
+    .col-md-4 {
+        width: 33.33333333%;
+    }
+}
+table, th, td {
+   border: 1px solid white;
+   padding: 10px;
+}
+.top-brands h3:after, .fresh-vegetables h3:after, .mail h3:after, .w3_login h3:after, .testimonials h3:after, .w3ls_w3l_banner_nav_right_grid h3:after, h3.title:after, .faq h3:after, .services h3:after, .about h3:after, .team h3:after, .events h3:after {
+    content: '';
+    background: #fdf6e5;
+    height: 2px;
+    width: 8%;
+    position: absolute;
+    bottom: 0%;
+    left: 46%;
+}
+.top-brands h3, .fresh-vegetables h3, .mail h3, .testimonials h3, .w3_login h3, .w3ls_w3l_banner_nav_right_grid h3, h3.title, .faq h3, .services h3, .about h3, .team h3, .events h3 {
+   
+    color: #2c3e50;
+   
+   
+}
+.panel {
+   
+    background-color: #fdf6e5;
+    
+}
+p {
+    margin: 0;
+    color: #2c3e50;
+}
+.w3l_fresh_vegetables_grids {
+   
+    background: white;
+}
+ .row_notify > a {
+    display: inline-block;
+    border: 1px solid #00b4c1;
+    text-transform: uppercase;
+    color: #00b4c1;
+    border-radius: 2px;
+    line-height: 32px;
+    position: relative;
+    padding: 0px 5px;
+    top: 0;
+}

@@ -1,0 +1,149 @@
+﻿@model Model.EF.Thucpham
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="col-md-9 w3l_fresh_vegetables_grid_right">
+    <div class="col-md-12 w3l_fresh_vegetables_grid1">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3> Có thể bạn chưa biết!</h3>
+            </div>
+
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="col-md-8">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+
+                                    <th colspan="2"><h4><strong>@Html.DisplayFor(model => model.Ten_thucpham)</strong></h4></th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+
+                                    <td></td>
+                                    <td>đơi vị (gram)</td>
+
+                                </tr>
+                                <tr>
+
+                                    <td>Khối lượng</td>
+                                    <td>100</td>
+
+                                </tr>
+                                <tr>
+
+                                    <td>Calories</td>
+                                    <td>@Html.DisplayFor(model => model.Calories)</td>
+
+                                </tr>
+                                <tr>
+                                       
+                                    <td>Total Fat</td>
+                                    <td>@Html.DisplayFor(model => model.Total_Fat)</td>
+
+                                </tr>
+                                <tr>
+
+                                    <td>Cholesterol</td>
+                                    <td>@Html.DisplayFor(model => model.Cholesterol)</td>
+
+                                </tr>
+                                <tr>
+
+                                    <td>Sodium</td>
+                                    <td>@Html.DisplayFor(model => model.Sodium)</td>
+
+                                </tr>
+                                <tr>
+                                     
+                                    <td>Total Carbohydrate</td>
+                                    <td>@Html.DisplayFor(model => model.Total_Carbohydrate)</td>
+
+                                </tr>
+                                <tr>
+
+                                    <td>Total Sugar</td>
+                                    <td>@Html.DisplayFor(model => model.Total_Sugar)</td>
+
+                                </tr>
+                                <tr>
+                                     
+                                    <td>Protein</td>
+                                    <td>@Html.DisplayFor(model => model.Protein)</td>
+
+                                </tr>
+
+
+                            </tbody>
+                        </table>
+                        <input id="txtFat" value="@Html.DisplayFor(model => model.Total_Fat)" type="hidden" />
+                        <input id="txtCarb" value="@Html.DisplayFor(model => model.Total_Carbohydrate)" type="hidden" />  
+                        <input id="txtPro" value="@Html.DisplayFor(model => model.Protein)" type="hidden" />  
+                    </div>
+                </div>
+                <!-- /.table-responsive -->
+                <div class="col-md-5">
+                    
+                        <div class="card-header">
+                            <i class="fa fa-pie-chart"></i> <h4><strong>Tỉ lệ thành phần các chất</strong> </h4>
+                        </div>
+                        <div class="card-body" style="padding-left: 50px;">
+                            <canvas id="myPieChartthucpham"></canvas>
+                        </div>
+                    
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-12">                    
+                   @Html.Raw(Model.Mota)
+                </div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+    </div>
+
+    <div class="clearfix"> </div>
+
+</div>
+
+
+<script language="javascript">
+
+            window.onload = function()
+            {
+
+                var Carbs = $('#txtCarb').val();
+                var Prot = $('#txtPro').val();
+                var Fats = $('#txtFat').val();
+                Carbs = Math.round(Carbs, 2);
+                Prot = Math.round(Prot, 2);
+                Fats = Math.round(Fats, 2);
+                var sum = Carbs + Prot + Fats;
+                Carbs = (Carbs / sum) * 100;
+                Prot = (Prot / sum)*100;
+                Fats = (Fats / sum)*100;
+                Carbs = Math.round(Carbs, 2);
+                Prot = Math.round(Prot, 2);
+                Fats = Math.round(Fats, 2);
+
+                var ctx = document.getElementById("myPieChartthucpham");
+                var myPieChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ["Carbs", "Proteins", "Fats"],
+                        datasets: [{
+                            data: [Carbs, Prot, Fats],
+                            backgroundColor: ['#007bff', '#dc3545', '#ffc107'],
+                        }],
+                    },
+                });
+
+            };
+
+
+</script>
